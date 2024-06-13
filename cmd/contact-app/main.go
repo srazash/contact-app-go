@@ -6,5 +6,6 @@ import (
 )
 
 func main() {
-	fmt.Printf("DB len: %d\n", len(contact.DB))
+	ptrDB := contact.All()
+	fmt.Printf("DB len: %d\n", len(*ptrDB))
 }
