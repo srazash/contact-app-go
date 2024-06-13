@@ -1,9 +1,10 @@
 package main
 
 import (
+	"contactapp/internal/contact"
 	"fmt"
 )
 
 func main() {
-	fmt.Println("I'm alive!")
+	fmt.Printf("DB len: %d\n", len(contact.DB))
 }
