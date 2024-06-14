@@ -18,6 +18,46 @@ type Contact struct {
 	Phone string `json:"phone"`
 }
 
+func (c *Contact) GetId() int {
+	return c.Id
+}
+
+func (c *Contact) GetFirst() string {
+	return c.First
+}
+
+func (c *Contact) GetLast() string {
+	return c.Last
+}
+
+func (c *Contact) GetEmail() string {
+	return c.Email
+}
+
+func (c *Contact) GetPhone() string {
+	return c.Phone
+}
+
+func (c *Contact) SetId(id int) {
+	c.Id = id
+}
+
+func (c *Contact) SetFirst(first string) {
+	c.First = first
+}
+
+func (c *Contact) SetLast(last string) {
+	c.Last = last
+}
+
+func (c *Contact) SetEmail(email string) {
+	c.Email = email
+}
+
+func (c *Contact) SetPhone(phone string) {
+	c.Phone = phone
+}
+
 func All() *[]Contact {
 	return &DB
 }
