@@ -1,9 +1,12 @@
+{{ define "title" }}contacts.app{{ end }}
+
+{{ define "body" }}
 <form action="/contacts" method="get">
     <fieldset>
         <legend>Contact Search</legend>
         <p>
             <label for="search">Search Term</label>
-            <input id="search" type="search" name="q" value='{{ request.args.get("q") or "" }}'/>
+            <input id="search" type="search" name="q" value=''/>
         </p>
         <p>
             <input type="submit" value="Search"/>
@@ -22,18 +25,19 @@
     </tr>
     </thead>
     <tbody>
-    {{range .ptrDB}}
+    {{ range .ptrDB }}
         <tr>
             <td>{{ .First }}</td>
             <td>{{ .Last }}</td>
             <td>{{ .Phone }}</td>
             <td>{{ .Email }}</td>
-            <td><a href="/contacts/{{.Id}}/edit">Edit</a></td>
+            <td><a href="/contacts/{{ .Id }}/edit">Edit</a></td>
         </tr>
-    {{end}}
+    {{ end }}
     </tbody>
 </table>
 
 <p>
     <a href="/contacts/new">Add Contact</a>
 </p>
+{{ end }}

@@ -3,6 +3,10 @@ package main
 import (
 	"contactapp/internal/contact"
 	"fmt"
+	"html/template"
+	"log"
+	"net/http"
+	"path/filepath"
 )
 
 func main() {
@@ -19,5 +23,24 @@ func main() {
 		fmt.Printf("\tName: %s, %s\n", c.Last, c.First)
 		fmt.Printf("\tEmail: %s\n", c.Email)
 		fmt.Printf("\tPhone: %s\n", c.Phone)
+	}
+
+	http.HandleFunc("/", serveTemplate)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func serveTemplate(w http.ResponseWriter, r *http.Request) {
+	layout := filepath.Join("templates", "layout.html")
+	index := filepath.Join("templates", "index.html")
+
+	tmpl, err := template.ParseFiles(layout, index)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = tmpl.ExecuteTemplate(w, "layout", nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
