@@ -25,11 +25,16 @@ func main() {
 		fmt.Printf("\tPhone: %s\n", c.Phone)
 	}
 
-	http.HandleFunc("/", serveTemplate)
+	http.HandleFunc("/", serveRoot)
+	http.HandleFunc("/contacts", serveContacts)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func serveTemplate(w http.ResponseWriter, r *http.Request) {
+func serveRoot(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/contacts", http.StatusFound)
+}
+
+func serveContacts(w http.ResponseWriter, r *http.Request) {
 	layout := filepath.Join("templates", "layout.html")
 	index := filepath.Join("templates", "index.html")
 
