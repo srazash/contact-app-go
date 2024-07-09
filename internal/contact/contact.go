@@ -2,6 +2,7 @@ package contact
 
 import (
 	"encoding/json"
+	"io"
 	"os"
 )
 
@@ -67,7 +68,16 @@ func Search(term string) []Contact {
 }
 
 func LoadDB() {
-	file, err := os.ReadFile(DBFILE)
+	dbfile, err := os.Open(DBFILE)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return
+		}
+		panic(err)
+	}
+	defer dbfile.Close()
+
+	file, err := io.ReadAll(dbfile)
 	if err != nil {
 		panic(err)
 	}
