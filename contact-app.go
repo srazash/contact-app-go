@@ -13,8 +13,13 @@ func main() {
 	ptrDB := contact.All()
 	fmt.Printf("DB len: %d\n", len(*ptrDB))
 
-	//contact.CreateContact("Ryan", "Shaw-Harrison", "ryan@mail.local", "+44 (0) 1234 567890")
 	contact.LoadDB()
+
+	// contact.CreateContact("Ryan", "Shaw-Harrison", "ryan@mail.local", "+44 (0) 1234 567890")
+	// contact.CreateContact("John", "Smith", "john@mail.local", "+44 (0) 1234 567999")
+	// contact.CreateContact("David", "Jones", "david@mail.local", "+44 (0) 1234 567000")
+	// contact.CreateContact("Sally", "Brown", "david@mail.local", "+44 (0) 1234 567000")
+
 	fmt.Printf("DB loaded, len: %d\n", len(*ptrDB))
 	fmt.Printf("DB: %v\n", *ptrDB)
 

@@ -91,7 +91,7 @@ func LoadDB() {
 }
 
 func SaveDB() {
-	file, err := os.OpenFile(DBFILE, os.O_APPEND|os.O_CREATE, 0666)
+	file, err := os.Create(DBFILE)
 	if err != nil {
 		panic(err)
 	}
