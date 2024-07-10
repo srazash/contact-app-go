@@ -39,6 +39,10 @@ func serveRoot(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/contacts", http.StatusFound)
 }
 
+type serveContactsData struct {
+	Contacts []contact.Contact
+}
+
 func serveContacts(w http.ResponseWriter, r *http.Request) {
 	layout := filepath.Join("templates", "layout.html")
 	index := filepath.Join("templates", "index.html")
@@ -49,7 +53,11 @@ func serveContacts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = tmpl.ExecuteTemplate(w, "layout", nil)
+	data := serveContactsData{
+		Contacts: *contact.All(),
+	}
+
+	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
