@@ -136,12 +136,12 @@ func RemoveContact(id int) {
 
 func ReIdContacts() {
 	nextId = 1
-	for _, c := range DB {
+	for i, c := range DB {
 		if c.GetId() == nextId {
 			nextId++
 			continue
 		}
-		c.SetId(nextId)
+		DB[i].Id = nextId
 		nextId++
 	}
 

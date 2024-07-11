@@ -15,8 +15,8 @@ func main() {
 
 	contact.LoadDB()
 
-	fmt.Printf("BEFORE: len: %d\n", len(*ptrDB))
-	fmt.Printf("DB: %v\n", *ptrDB)
+	// fmt.Printf("BEFORE: len: %d\n", len(*ptrDB))
+	// fmt.Printf("DB: %v\n", *ptrDB)
 
 	// contact.CreateContact("Ryan", "Shaw-Harrison", "ryan@mail.local", "+44 (0) 1234 567890")
 	// contact.CreateContact("John", "Smith", "john@mail.local", "+44 (0) 1234 567999")
@@ -24,10 +24,10 @@ func main() {
 	// contact.CreateContact("Sally", "Brown", "david@mail.local", "+44 (0) 1234 567000")
 
 	// contact.RemoveContact(2)
-	contact.ReIdContacts()
+	// contact.ReIdContacts()
 
-	fmt.Printf("AFTER: len: %d\n", len(*ptrDB))
-	fmt.Printf("DB: %v\n", *ptrDB)
+	// fmt.Printf("AFTER: len: %d\n", len(*ptrDB))
+	// fmt.Printf("DB: %v\n", *ptrDB)
 
 	for _, c := range *ptrDB {
 		fmt.Printf("\tID: %d\n", c.Id)
