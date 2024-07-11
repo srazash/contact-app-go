@@ -130,8 +130,19 @@ func RemoveContact(id int) {
 	copy(DB[idx:], DB[idx+1:])
 	DB = DB[:len(DB)-1]
 
-	for i, c := range DB {
-		c.SetId(i + 1)
+	SaveDB()
+	ReIdContacts()
+}
+
+func ReIdContacts() {
+	nextId = 1
+	for _, c := range DB {
+		if c.GetId() == nextId {
+			nextId++
+			continue
+		}
+		c.SetId(nextId)
+		nextId++
 	}
 
 	SaveDB()
