@@ -15,12 +15,17 @@ func main() {
 
 	contact.LoadDB()
 
+	fmt.Printf("DB loaded, len: %d\n", len(*ptrDB))
+	fmt.Printf("DB: %v\n", *ptrDB)
+
 	// contact.CreateContact("Ryan", "Shaw-Harrison", "ryan@mail.local", "+44 (0) 1234 567890")
 	// contact.CreateContact("John", "Smith", "john@mail.local", "+44 (0) 1234 567999")
 	// contact.CreateContact("David", "Jones", "david@mail.local", "+44 (0) 1234 567000")
 	// contact.CreateContact("Sally", "Brown", "david@mail.local", "+44 (0) 1234 567000")
 
-	fmt.Printf("DB loaded, len: %d\n", len(*ptrDB))
+	// contact.RemoveContact(2)
+
+	fmt.Printf("Removed Contact 2, len: %d\n", len(*ptrDB))
 	fmt.Printf("DB: %v\n", *ptrDB)
 
 	for _, c := range *ptrDB {

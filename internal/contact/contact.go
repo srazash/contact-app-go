@@ -123,3 +123,16 @@ func CreateContact(first string, last string, email string, phone string) {
 
 	SaveDB()
 }
+
+func RemoveContact(id int) {
+	idx := id - 1
+
+	copy(DB[idx:], DB[idx+1:])
+	DB = DB[:len(DB)-1]
+
+	for i, c := range DB {
+		c.SetId(i + 1)
+	}
+
+	SaveDB()
+}
