@@ -29,6 +29,13 @@ func main() {
 	// fmt.Printf("AFTER: len: %d\n", len(*ptrDB))
 	// fmt.Printf("DB: %v\n", *ptrDB)
 
+	search := contact.Search("ryan")
+	fmt.Println(search)
+	search = contact.Search("mail.local")
+	fmt.Println(search)
+	search = contact.Search("567000")
+	fmt.Println(search)
+
 	for _, c := range *ptrDB {
 		fmt.Printf("\tID: %d\n", c.Id)
 		fmt.Printf("\tName: %s, %s\n", c.Last, c.First)

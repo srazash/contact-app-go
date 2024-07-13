@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 )
 
 const DBFILE string = "contacts.json"
@@ -25,12 +26,20 @@ func All() *[]Contact {
 }
 
 func Search(term string) []Contact {
-	results := 
-	return []Contact{}
+	results := []Contact{}
+
+	for i := range DB {
+		c := returnContactString(DB[i])
+		if strings.Contains(c, term) {
+			results = append(results, DB[i])
+		}
+	}
+
+	return results
 }
 
-func returnFullName(c Contact) string {
-	return fmt.Sprintf("%s %s", c.First, c.Last)
+func returnContactString(c Contact) string {
+	return fmt.Sprintf("%s %s %s %s", c.First, c.Last, c.Email, c.Phone)
 }
 
 func LoadDB() {
