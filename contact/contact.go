@@ -120,8 +120,9 @@ func RemoveContact(id int) {
 	copy(DB[idx:], DB[idx+1:])
 	DB = DB[:len(DB)-1]
 
-	SaveDB()
 	reIdContacts()
+
+	SaveDB()
 }
 
 func reIdContacts() {
@@ -134,6 +135,4 @@ func reIdContacts() {
 		DB[i].Id = nextId
 		nextId++
 	}
-
-	SaveDB()
 }
