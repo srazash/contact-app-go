@@ -25,6 +25,21 @@ func All() *[]Contact {
 	return &DB
 }
 
+func Update(c *Contact, first, last, email, phone string) {
+	if first != "" {
+		c.First = first
+	}
+	if last != "" {
+		c.Last = last
+	}
+	if email != "" {
+		c.Email = email
+	}
+	if phone != "" {
+		c.Phone = phone
+	}
+}
+
 func Search(term string) []Contact {
 	results := []Contact{}
 

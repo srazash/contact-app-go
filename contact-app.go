@@ -1,7 +1,7 @@
 package main
 
 import (
-	"contactapp/internal/contact"
+	"contactapp/contact"
 	"fmt"
 	"html/template"
 	"log"
