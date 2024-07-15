@@ -2,6 +2,7 @@ package contact
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -38,6 +39,13 @@ func Update(c *Contact, first, last, email, phone string) {
 	if phone != "" {
 		c.Phone = phone
 	}
+}
+
+func Find(id int) (Contact, error) {
+	if id <= 0 || id >= nextId {
+		return Contact{}, errors.New("invalid id")
+	}
+	return DB[id-1], nil
 }
 
 func Search(term string) []Contact {

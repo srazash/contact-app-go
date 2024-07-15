@@ -36,6 +36,13 @@ func main() {
 	search = contact.Search("567000")
 	fmt.Println(search)
 
+	result, err := contact.Find(1)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(result)
+	}
+
 	for _, c := range *ptrDB {
 		fmt.Printf("\tID: %d\n", c.Id)
 		fmt.Printf("\tName: %s, %s\n", c.Last, c.First)
