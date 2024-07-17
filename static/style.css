@@ -1,3 +1,12 @@
-body { background-color: gainsboro; }
+body { background-color: lightgray; }
 
-h { text-align: center; }
+h1 {
+    text-align: center;
+    text-decoration: underline;
+}
+
+.required::after {
+    content:"*";
+    font-weight:bold;
+    color:red;
+}

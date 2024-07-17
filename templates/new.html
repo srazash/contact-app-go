@@ -1,4 +1,4 @@
-{{ define "title" }}New contact{{ end }}
+{{ define "title" }}contact.app :: new contact{{ end }}
 
 {{ define "body" }}
 <form action="/contacts/new/save" method="post">
@@ -6,12 +6,12 @@
         <legend>Contact Values</legend>
         <div class="table rows">
             <p>
-                <label for="first">First Name</label>
-                <input name="first" id="first" type="text" placeholder="First Name">
+                <label for="first" class="required">First Name</label>
+                <input name="first" id="first" type="text" placeholder="First Name" required>
             </p>
             <p>
-                <label for="last">Last Name</label>
-                <input name="last" id="last" type="text" placeholder="Last Name">
+                <label for="last" class="required">Last Name</label>
+                <input name="last" id="last" type="text" placeholder="Last Name" required>
             </p>
             <p>
                 <label for="email">Email</label>

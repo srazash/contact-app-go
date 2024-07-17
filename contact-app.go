@@ -50,6 +50,9 @@ func main() {
 		fmt.Printf("\tPhone: %s\n", c.Phone)
 	}
 
+	static := http.FileServer(http.Dir("static"))
+	http.Handle("/static/", http.StripPrefix("/static/", static))
+
 	http.HandleFunc("/", serveRoot)
 	http.HandleFunc("/contacts", serveContacts)
 	http.HandleFunc("/contacts/new", serveContactsNew)
