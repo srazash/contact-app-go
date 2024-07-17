@@ -53,6 +53,7 @@ func main() {
 	http.HandleFunc("/", serveRoot)
 	http.HandleFunc("/contacts", serveContacts)
 	http.HandleFunc("/contacts/new", serveContactsNew)
+	http.HandleFunc("/contacts/new/save", serveContactsNewSave)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
@@ -98,4 +99,24 @@ func serveContactsNew(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+func serveContactsNewSave(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, "Failed to parse form", http.StatusBadRequest)
+		return
+	}
+
+	contact.CreateContact(r.FormValue("first"),
+		r.FormValue("last"),
+		r.FormValue("email"),
+		r.FormValue("phone"))
+
+	http.Redirect(w, r, "/contacts", http.StatusFound)
 }
