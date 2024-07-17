@@ -52,6 +52,7 @@ func main() {
 
 	http.HandleFunc("/", serveRoot)
 	http.HandleFunc("/contacts", serveContacts)
+	http.HandleFunc("/contacts/new", serveContactsNew)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
@@ -78,6 +79,22 @@ func serveContacts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = tmpl.ExecuteTemplate(w, "layout", data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func serveContactsNew(w http.ResponseWriter, r *http.Request) {
+	layout := filepath.Join("templates", "layout.html")
+	contactnew := filepath.Join("templates", "new.html")
+
+	tmpl, err := template.ParseFiles(layout, contactnew)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = tmpl.ExecuteTemplate(w, "layout", nil)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
