@@ -1,0 +1,32 @@
+{{ define "title" }}contact.app :: edit contact{{ end }}
+
+{{ define "body" }}
+<form action="/contacts/edit/{{ .Id }}/save" method="post">
+    <fieldset>
+        <legend>Contact Values</legend>
+        <div class="table rows">
+            <p>
+                <label for="first" class="required">First Name</label>
+                <input name="first" id="first" type="text" placeholder="First Name" value="{{ .First }}" required>
+            </p>
+            <p>
+                <label for="last" class="required">Last Name</label>
+                <input name="last" id="last" type="text" placeholder="Last Name" value="{{ .Last }}" required>
+            </p>
+            <p>
+                <label for="email">Email</label>
+                <input name="email" id="email" type="text" placeholder="Email" value="{{ .Email }}">
+            </p>
+            <p>
+                <label for="phone">Phone</label>
+                <input name="phone" id="phone" type="text" placeholder="Phone" value="{{ .Phone }}">
+            </p>
+        </div>
+        <button>Save</button>
+    </fieldset>
+</form>
+
+<p>
+    <a href="/contacts">Back</a>
+</p>
+{{ end }}
