@@ -26,18 +26,18 @@ func All() *[]Contact {
 	return &DB
 }
 
-func Update(c *Contact, first, last, email, phone string) {
+func Update(id int, first, last, email, phone string) {
 	if first != "" {
-		c.First = first
+		DB[id-1].First = first
 	}
 	if last != "" {
-		c.Last = last
+		DB[id-1].Last = last
 	}
 	if email != "" {
-		c.Email = email
+		DB[id-1].Email = email
 	}
 	if phone != "" {
-		c.Phone = phone
+		DB[id-1].Phone = phone
 	}
 }
 

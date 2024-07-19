@@ -2,6 +2,7 @@ package main
 
 import (
 	"contactapp/contact"
+	"errors"
 	"fmt"
 	"html/template"
 	"log"
@@ -59,7 +60,7 @@ func main() {
 	http.HandleFunc("/contacts", serveContacts)
 	http.HandleFunc("/contacts/new", serveContactsNew)
 	http.HandleFunc("/contacts/new/save", serveContactsNewSave)
-	http.HandleFunc("/contacts/", serveContactsShow)
+	http.HandleFunc("/contacts/", serveContactsShowEdit)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
@@ -127,21 +128,46 @@ func serveContactsNewSave(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/contacts", http.StatusFound)
 }
 
-func serveContactsShow(w http.ResponseWriter, r *http.Request) {
-	layout := filepath.Join("templates", "layout.html")
-	show := filepath.Join("templates", "show.html")
+func serveContactsShowEdit(w http.ResponseWriter, r *http.Request) {
+	url := strings.Split(r.URL.Path, "/")
 
-	tmpl, err := template.ParseFiles(layout, show)
+	layout := filepath.Join("templates", "layout.html")
+	var body string = ""
+	var id int = 0
+	var err error = errors.ErrUnsupported
+
+	if url[len(url)-1] == "edit" {
+		body = filepath.Join("templates", "edit.html")
+		id, err = strconv.Atoi(url[len(url)-2])
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else if url[len(url)-1] == "save" {
+		id, err = strconv.Atoi(url[len(url)-2])
+		if err != nil {
+			log.Fatal(err)
+		}
+		contact.Update(id,
+			r.FormValue("first"),
+			r.FormValue("last"),
+			r.FormValue("email"),
+			r.FormValue("phone"))
+		http.Redirect(w, r, "/contacts", http.StatusFound)
+		return
+	} else {
+		body = filepath.Join("templates", "show.html")
+		id, err = strconv.Atoi(url[len(url)-1])
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	tmpl, err := template.ParseFiles(layout, body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	url := strings.Split(r.URL.Path, "/")
-	id, err := strconv.Atoi(url[len(url)-1])
-	if err != nil {
-		log.Fatal(err)
-	}
 	data, err := contact.Find(id)
 	if err != nil {
 		log.Fatal(err)
