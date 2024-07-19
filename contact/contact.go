@@ -39,6 +39,8 @@ func Update(id int, first, last, email, phone string) {
 	if phone != "" {
 		DB[id-1].Phone = phone
 	}
+
+	SaveDB()
 }
 
 func Find(id int) (Contact, error) {

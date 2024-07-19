@@ -3,7 +3,6 @@ package main
 import (
 	"contactapp/contact"
 	"errors"
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -13,45 +12,9 @@ import (
 )
 
 func main() {
-	ptrDB := contact.All()
-	fmt.Printf("DB len: %d\n", len(*ptrDB))
-
 	contact.LoadDB()
-
-	// fmt.Printf("BEFORE: len: %d\n", len(*ptrDB))
-	// fmt.Printf("DB: %v\n", *ptrDB)
-
-	// contact.CreateContact("Ryan", "Shaw-Harrison", "ryan@mail.local", "+44 (0) 1234 567890")
-	// contact.CreateContact("John", "Smith", "john@mail.local", "+44 (0) 1234 567999")
-	// contact.CreateContact("David", "Jones", "david@mail.local", "+44 (0) 1234 567000")
-	// contact.CreateContact("Sally", "Brown", "david@mail.local", "+44 (0) 1234 567000")
-
-	// contact.RemoveContact(2)
-	// contact.ReIdContacts()
-
-	// fmt.Printf("AFTER: len: %d\n", len(*ptrDB))
-	// fmt.Printf("DB: %v\n", *ptrDB)
-
-	search := contact.Search("ryan")
-	fmt.Println(search)
-	search = contact.Search("mail.local")
-	fmt.Println(search)
-	search = contact.Search("567000")
-	fmt.Println(search)
-
-	result, err := contact.Find(1)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(result)
-	}
-
-	for _, c := range *ptrDB {
-		fmt.Printf("\tID: %d\n", c.Id)
-		fmt.Printf("\tName: %s, %s\n", c.Last, c.First)
-		fmt.Printf("\tEmail: %s\n", c.Email)
-		fmt.Printf("\tPhone: %s\n", c.Phone)
-	}
+	ptrDB := contact.All()
+	log.Printf("DB loaded, contacts: %d\n", len(*ptrDB))
 
 	static := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", static))
@@ -61,7 +24,10 @@ func main() {
 	http.HandleFunc("/contacts/new", serveContactsNew)
 	http.HandleFunc("/contacts/new/save", serveContactsNewSave)
 	http.HandleFunc("/contacts/", serveContactsShowEdit)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+
+	port := ":3000"
+	log.Printf("http://localhost%s\n", port)
+	log.Fatal(http.ListenAndServe(port, nil))
 }
 
 func serveRoot(w http.ResponseWriter, r *http.Request) {
