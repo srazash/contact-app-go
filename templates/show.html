@@ -1,0 +1,14 @@
+{{ define "title" }}contact.app :: contact {{ .Id }} {{ end }}
+
+{{ define "body" }}
+<h2>{{ .First }} {{ .Last }} <a href="/contacts/{{ .Id }}/edit">Edit</a></h2>
+
+<div>
+    <div><a href="tel:{{ .Phone }}">{{ .Phone }}</a></div>
+    <div><a href="mailto:{{ .Email }}">{{ .Email }}</a></div>
+</div>
+
+<p>
+    <a href="/contacts">Back</a>
+</p>
+{{ end }}

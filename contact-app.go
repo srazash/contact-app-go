@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"strconv"
+	"strings"
 )
 
 func main() {
@@ -57,6 +59,7 @@ func main() {
 	http.HandleFunc("/contacts", serveContacts)
 	http.HandleFunc("/contacts/new", serveContactsNew)
 	http.HandleFunc("/contacts/new/save", serveContactsNewSave)
+	http.HandleFunc("/contacts/", serveContactsShow)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
@@ -122,4 +125,30 @@ func serveContactsNewSave(w http.ResponseWriter, r *http.Request) {
 		r.FormValue("phone"))
 
 	http.Redirect(w, r, "/contacts", http.StatusFound)
+}
+
+func serveContactsShow(w http.ResponseWriter, r *http.Request) {
+	layout := filepath.Join("templates", "layout.html")
+	show := filepath.Join("templates", "show.html")
+
+	tmpl, err := template.ParseFiles(layout, show)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	url := strings.Split(r.URL.Path, "/")
+	id, err := strconv.Atoi(url[len(url)-1])
+	if err != nil {
+		log.Fatal(err)
+	}
+	data, err := contact.Find(id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = tmpl.ExecuteTemplate(w, "layout", data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }

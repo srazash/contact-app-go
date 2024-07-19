@@ -15,7 +15,6 @@
 <table>
     <thead>
     <tr>
-        <th>Id</th>
         <th>First</th>
         <th>Last</th>
         <th>Phone</th>
@@ -26,11 +25,11 @@
     <tbody>
     {{ range .Contacts }}
         <tr>
-            <td>{{ .Id }}</td>
             <td>{{ .First }}</td>
             <td>{{ .Last }}</td>
             <td><a href="tel:{{ .Phone }}">{{ .Phone }}</a></td>
             <td><a href="mailto:{{ .Email }}">{{ .Email }}</a></td>
+            <td><a href="/contacts/{{ .Id }}">Show</a></td>
             <td><a href="/contacts/{{ .Id }}/edit">Edit</a></td>
         </tr>
     {{ end }}
