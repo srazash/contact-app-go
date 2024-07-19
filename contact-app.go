@@ -70,6 +70,7 @@ func serveRoot(w http.ResponseWriter, r *http.Request) {
 
 type serveContactsData struct {
 	Contacts []contact.Contact
+	Term     string
 }
 
 func serveContacts(w http.ResponseWriter, r *http.Request) {
@@ -82,8 +83,22 @@ func serveContacts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := serveContactsData{
-		Contacts: *contact.All(),
+	var term string = ""
+	arg := r.URL.Query()
+	term = arg.Get("q")
+
+	var data serveContactsData = serveContactsData{}
+
+	if term == "" {
+		data = serveContactsData{
+			Contacts: *contact.All(),
+			Term:     term,
+		}
+	} else {
+		data = serveContactsData{
+			Contacts: contact.Search(term),
+			Term:     term,
+		}
 	}
 
 	err = tmpl.ExecuteTemplate(w, "layout", data)

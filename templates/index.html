@@ -6,35 +6,37 @@
         <legend>Contact Search</legend>
         <p>
             <label for="search">Search Term</label>
-            <input id="search" type="search" name="q" value=''/>
+            <input id="search" type="search" name="q" value='{{ .Term }}'/>
             <input type="submit" value="Search"/>
+            <a href="/contacts">Reset</a>
         </p>
     </fieldset>
 </form>
 
 <table>
     <thead>
-    <tr>
-        <th>First</th>
-        <th>Last</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    {{ range .Contacts }}
         <tr>
-            <td>{{ .First }}</td>
-            <td>{{ .Last }}</td>
-            <td><a href="tel:{{ .Phone }}">{{ .Phone }}</a></td>
-            <td><a href="mailto:{{ .Email }}">{{ .Email }}</a></td>
-            <td><a href="/contacts/{{ .Id }}">Show</a></td>
-            <td><a href="/contacts/{{ .Id }}/edit">Edit</a></td>
+            <th>First</th>
+            <th>Last</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th></th>
         </tr>
-    {{ end }}
+        </thead>
+        <tbody>
+        {{ range .Contacts }}
+            <tr>
+                <td>{{ .First }}</td>
+                <td>{{ .Last }}</td>
+                <td><a href="tel:{{ .Phone }}">{{ .Phone }}</a></td>
+                <td><a href="mailto:{{ .Email }}">{{ .Email }}</a></td>
+                <td><a href="/contacts/{{ .Id }}">Show</a></td>
+                <td><a href="/contacts/{{ .Id }}/edit">Edit</a></td>
+            </tr>
+        {{ end }}
     </tbody>
 </table>
+
 
 <p>
     <a href="/contacts/new">Add Contact</a>
