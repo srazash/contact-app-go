@@ -6,8 +6,23 @@
     <link rel="stylesheet" href="/static/style.css">
   </head>
   <body>
-    <h1>contact.app</h1>
+    <div class="centre">
+      <h1>contact.app</h1>
+      <img src="/static/image/pc.gif" alt="Personal Computer"/>
+      <h2>a digital rolodex on <i>your</i> personal computer!</h2>
+    </div>
     {{ template "body" . }}
+    <div class="centre">
+      <div><img src="/static/image/itchyscratchy.gif" alt="Itchy & Scratchy"/></div>
+      <div>
+        <img src="/static/image/notepad.gif" alt="Created with Notepad"/>
+        <img src="/static/image/netscape.gif" alt="Netscape"/>
+        <img src="/static/image/ie.gif" alt="Internet Explorer"/>
+        <img src="/static/image/noframes.gif" alt="Campaign Against Frames"/>
+        <img src="/static/image/htmx.gif" alt="Created with HTMX"/>
+      </div>
+      <div><img src="/static/image/counter.gif" alt="Visitors"/></div>
+    </div>
   </body>
 </html>
 {{ end }}

@@ -1,9 +1,16 @@
-body { background-color: lightgray; }
+body { background-image: url("/static/image/bg.gif"); }
 
 h1 {
     text-align: center;
     text-decoration: underline;
 }
+
+h2 {
+    text-align: center;
+    text-decoration: underline;
+}
+
+.centre { text-align: center; }
 
 .required::after {
     content:"*";
