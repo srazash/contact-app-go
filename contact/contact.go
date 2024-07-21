@@ -22,52 +22,11 @@ type Contact struct {
 	Phone string `json:"phone"`
 }
 
-func All() *[]Contact {
+func Ptr() *[]Contact {
 	return &DB
 }
 
-func Update(id int, first, last, email, phone string) {
-	if first != "" {
-		DB[id-1].First = first
-	}
-	if last != "" {
-		DB[id-1].Last = last
-	}
-	if email != "" {
-		DB[id-1].Email = email
-	}
-	if phone != "" {
-		DB[id-1].Phone = phone
-	}
-
-	SaveDB()
-}
-
-func Find(id int) (Contact, error) {
-	if id <= 0 || id >= nextId {
-		return Contact{}, errors.New("invalid id")
-	}
-	return DB[id-1], nil
-}
-
-func Search(term string) []Contact {
-	results := []Contact{}
-
-	for i := range DB {
-		c := returnContactString(DB[i])
-		if strings.Contains(c, term) {
-			results = append(results, DB[i])
-		}
-	}
-
-	return results
-}
-
-func returnContactString(c Contact) string {
-	return fmt.Sprintf("%s %s %s %s", c.First, c.Last, c.Email, c.Phone)
-}
-
-func LoadDB() {
+func Load() {
 	dbfile, err := os.Open(DBFILE)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -90,7 +49,7 @@ func LoadDB() {
 	nextId += len(DB)
 }
 
-func SaveDB() {
+func Save() {
 	file, err := os.Create(DBFILE)
 	if err != nil {
 		panic(err)
@@ -108,7 +67,7 @@ func SaveDB() {
 	}
 }
 
-func CreateContact(first string, last string, email string, phone string) {
+func Create(first string, last string, email string, phone string) {
 	contact := Contact{
 		Id:    nextId,
 		First: first,
@@ -121,21 +80,37 @@ func CreateContact(first string, last string, email string, phone string) {
 
 	DB = append(DB, contact)
 
-	SaveDB()
+	Save()
 }
 
-func RemoveContact(id int) {
+func Update(id int, first, last, email, phone string) {
+	if first != "" {
+		DB[id-1].First = first
+	}
+	if last != "" {
+		DB[id-1].Last = last
+	}
+	if email != "" {
+		DB[id-1].Email = email
+	}
+	if phone != "" {
+		DB[id-1].Phone = phone
+	}
+
+	Save()
+}
+
+func Delete(id int) {
 	idx := id - 1
 
 	copy(DB[idx:], DB[idx+1:])
 	DB = DB[:len(DB)-1]
 
-	reIdContacts()
-
-	SaveDB()
+	updateIds()
+	Save()
 }
 
-func reIdContacts() {
+func updateIds() {
 	nextId = 1
 	for i := range DB {
 		if DB[i].Id == nextId {
@@ -145,4 +120,28 @@ func reIdContacts() {
 		DB[i].Id = nextId
 		nextId++
 	}
+}
+
+func Find(id int) (Contact, error) {
+	if id <= 0 || id >= nextId {
+		return Contact{}, errors.New("invalid id")
+	}
+	return DB[id-1], nil
+}
+
+func Search(term string) []Contact {
+	results := []Contact{}
+
+	for i := range DB {
+		c := contactString(DB[i])
+		if strings.Contains(c, term) {
+			results = append(results, DB[i])
+		}
+	}
+
+	return results
+}
+
+func contactString(c Contact) string {
+	return fmt.Sprintf("%s %s %s %s", c.First, c.Last, c.Email, c.Phone)
 }

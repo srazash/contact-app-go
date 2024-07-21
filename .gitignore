@@ -9,8 +9,4 @@ go.work
 
 main
 main.exe
-contactapp
-contactapp.exe
-contact-app
-contact-app.exe
 tmp/

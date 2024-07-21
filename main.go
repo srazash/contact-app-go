@@ -12,8 +12,8 @@ import (
 )
 
 func main() {
-	contact.LoadDB()
-	ptrDB := contact.All()
+	contact.Load()
+	ptrDB := contact.Ptr()
 	log.Printf("DB loaded, contacts: %d\n", len(*ptrDB))
 
 	static := http.FileServer(http.Dir("static"))
@@ -57,7 +57,7 @@ func serveContacts(w http.ResponseWriter, r *http.Request) {
 
 	if term == "" {
 		data = serveContactsData{
-			Contacts: *contact.All(),
+			Contacts: *contact.Ptr(),
 			Term:     term,
 		}
 	} else {
@@ -101,7 +101,7 @@ func serveContactsNewSave(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	contact.CreateContact(r.FormValue("first"),
+	contact.Create(r.FormValue("first"),
 		r.FormValue("last"),
 		r.FormValue("email"),
 		r.FormValue("phone"))
