@@ -2,6 +2,7 @@ package serve
 
 import (
 	"contactapp/contact"
+	"contactapp/counter"
 	"errors"
 	"html/template"
 	"log"
@@ -12,12 +13,14 @@ import (
 )
 
 func Root(w http.ResponseWriter, r *http.Request) {
+	counter.Increment()
 	http.Redirect(w, r, "/contacts", http.StatusFound)
 }
 
 type serveContactsData struct {
 	Contacts []contact.Contact
 	Term     string
+	Counter  string
 }
 
 func Contacts(w http.ResponseWriter, r *http.Request) {
@@ -40,11 +43,13 @@ func Contacts(w http.ResponseWriter, r *http.Request) {
 		data = serveContactsData{
 			Contacts: *contact.Ptr(),
 			Term:     term,
+			Counter:  counter.PaddedCount(),
 		}
 	} else {
 		data = serveContactsData{
 			Contacts: contact.Search(term),
 			Term:     term,
+			Counter:  counter.PaddedCount(),
 		}
 	}
 
@@ -52,6 +57,10 @@ func Contacts(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+type serveCounterOnlyData struct {
+	Counter string
 }
 
 func ContactsNew(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +73,11 @@ func ContactsNew(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = tmpl.ExecuteTemplate(w, "layout", nil)
+	data := serveCounterOnlyData{
+		Counter: counter.PaddedCount(),
+	}
+
+	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

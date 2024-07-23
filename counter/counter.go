@@ -2,6 +2,7 @@ package counter
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"os"
 )
@@ -10,21 +11,26 @@ const COUNTFILE string = "count.json"
 
 var Count int = 0
 
-func Ptr() *int {
-	return &Count
+func Increment() {
+	Count++
+	Save()
+}
+
+func PaddedCount() string {
+	return fmt.Sprintf("%06d", Count)
 }
 
 func Load() {
-	dbfile, err := os.Open(COUNTFILE)
+	countfile, err := os.Open(COUNTFILE)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return
 		}
 		panic(err)
 	}
-	defer dbfile.Close()
+	defer countfile.Close()
 
-	file, err := io.ReadAll(dbfile)
+	file, err := io.ReadAll(countfile)
 	if err != nil {
 		panic(err)
 	}
@@ -33,8 +39,6 @@ func Load() {
 	if err != nil {
 		panic(err)
 	}
-
-	Count += Count
 }
 
 func Save() {

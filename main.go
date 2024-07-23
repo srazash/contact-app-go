@@ -2,6 +2,7 @@ package main
 
 import (
 	"contactapp/contact"
+	"contactapp/counter"
 	"contactapp/serve"
 	"log"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 
 func main() {
 	contact.Load()
+	counter.Load()
 	ptrDB := contact.Ptr()
 	log.Printf("DB loaded, contacts: %d\n", len(*ptrDB))
 
