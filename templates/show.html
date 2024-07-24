@@ -1,15 +1,15 @@
-{{ define "title" }}contact.app :: contact {{ .Id }} {{ end }}
+{{ define "title" }}contact.app :: contact {{ .Contact.Id }} {{ end }}
 
 {{ define "body" }}
-<h2>{{ .First }} {{ .Last }}</h2>
+<h2>{{ .Contact.First }} {{ .Contact.Last }}</h2>
 
 <div>
-    <div><a href="tel:{{ .Phone }}">{{ .Phone }}</a></div>
-    <div><a href="mailto:{{ .Email }}">{{ .Email }}</a></div>
+    <div><a href="tel:{{ .Contact.Phone }}">{{ .Contact.Phone }}</a></div>
+    <div><a href="mailto:{{ .Contact.Email }}">{{ .Contact.Email }}</a></div>
 </div>
 
 <p>
-    <a href="/contacts/{{ .Id }}/edit">Edit</a>
+    <a href="/contacts/{{ .Contact.Id }}/edit">Edit</a>
     <a href="/contacts">Back</a>
 </p>
 {{ end }}

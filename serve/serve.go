@@ -17,12 +17,6 @@ func Root(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/contacts", http.StatusFound)
 }
 
-type serveContactsData struct {
-	Contacts []contact.Contact
-	Term     string
-	Counter  string
-}
-
 func Contacts(w http.ResponseWriter, r *http.Request) {
 	layout := filepath.Join("templates", "layout.html")
 	index := filepath.Join("templates", "index.html")
@@ -37,30 +31,24 @@ func Contacts(w http.ResponseWriter, r *http.Request) {
 	arg := r.URL.Query()
 	term = arg.Get("q")
 
-	var data serveContactsData = serveContactsData{}
+	data := struct {
+		Contacts []contact.Contact
+		Term     string
+		Counter  string
+	}{
+		Contacts: *contact.Ptr(),
+		Term:     term,
+		Counter:  counter.PaddedCount(),
+	}
 
-	if term == "" {
-		data = serveContactsData{
-			Contacts: *contact.Ptr(),
-			Term:     term,
-			Counter:  counter.PaddedCount(),
-		}
-	} else {
-		data = serveContactsData{
-			Contacts: contact.Search(term),
-			Term:     term,
-			Counter:  counter.PaddedCount(),
-		}
+	if term != "" {
+		data.Contacts = contact.Search(term)
 	}
 
 	err = tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-}
-
-type serveCounterOnlyData struct {
-	Counter string
 }
 
 func ContactsNew(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +61,9 @@ func ContactsNew(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := serveCounterOnlyData{
+	data := struct {
+		Counter string
+	}{
 		Counter: counter.PaddedCount(),
 	}
 
@@ -143,9 +133,17 @@ func ContactsShowEdit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := contact.Find(id)
+	con, err := contact.Find(id)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	data := struct {
+		Contact contact.Contact
+		Counter string
+	}{
+		Contact: con,
+		Counter: counter.PaddedCount(),
 	}
 
 	err = tmpl.ExecuteTemplate(w, "layout", data)

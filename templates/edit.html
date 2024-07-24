@@ -1,25 +1,25 @@
-{{ define "title" }}contact.app :: edit contact{{ end }}
+{{ define "title" }}contact.app :: edit contact {{ .Contact.Id }}{{ end }}
 
 {{ define "body" }}
-<form action="/contacts/edit/{{ .Id }}/save" method="post">
+<form action="/contacts/edit/{{ .Contact.Id }}/save" method="post">
     <fieldset>
         <legend>Contact Values</legend>
         <div class="table rows">
             <p>
                 <label for="first" class="required">First Name</label>
-                <input name="first" id="first" type="text" placeholder="First Name" value="{{ .First }}" required>
+                <input name="first" id="first" type="text" placeholder="First Name" value="{{ .Contact.First }}" required>
             </p>
             <p>
                 <label for="last" class="required">Last Name</label>
-                <input name="last" id="last" type="text" placeholder="Last Name" value="{{ .Last }}" required>
+                <input name="last" id="last" type="text" placeholder="Last Name" value="{{ .Contact.Last }}" required>
             </p>
             <p>
                 <label for="email">Email</label>
-                <input name="email" id="email" type="text" placeholder="Email" value="{{ .Email }}">
+                <input name="email" id="email" type="text" placeholder="Email" value="{{ .Contact.Email }}">
             </p>
             <p>
                 <label for="phone">Phone</label>
-                <input name="phone" id="phone" type="text" placeholder="Phone" value="{{ .Phone }}">
+                <input name="phone" id="phone" type="text" placeholder="Phone" value="{{ .Contact.Phone }}">
             </p>
         </div>
         <button>Save</button>
