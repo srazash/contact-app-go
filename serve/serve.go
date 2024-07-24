@@ -36,13 +36,14 @@ func Contacts(w http.ResponseWriter, r *http.Request) {
 		Term     string
 		Counter  string
 	}{
-		Contacts: *contact.Ptr(),
-		Term:     term,
-		Counter:  counter.PaddedCount(),
-	}
-
-	if term != "" {
-		data.Contacts = contact.Search(term)
+		Contacts: func() []contact.Contact {
+			if term == "" {
+				return *contact.Ptr()
+			}
+			return contact.Search(term)
+		}(),
+		Term:    term,
+		Counter: counter.PaddedCount(),
 	}
 
 	err = tmpl.ExecuteTemplate(w, "layout", data)
