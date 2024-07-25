@@ -13,7 +13,9 @@ import (
 )
 
 func Root(w http.ResponseWriter, r *http.Request) {
-	counter.Increment()
+	if r.URL.Path == "/" {
+		counter.Increment()
+	}
 	http.Redirect(w, r, "/contacts", http.StatusFound)
 }
 
