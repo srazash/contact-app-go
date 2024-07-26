@@ -12,7 +12,8 @@ func main() {
 	contact.Load()
 	counter.Load()
 	ptrDB := contact.Ptr()
-	log.Printf("DB loaded, contacts: %d\n", len(*ptrDB))
+	log.Printf("loaded %d contacts\n", len(*ptrDB))
+	log.Printf("loaded %d visitors\n", counter.Count)
 
 	static := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", static))

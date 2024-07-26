@@ -122,6 +122,14 @@ func ContactsShowEdit(w http.ResponseWriter, r *http.Request) {
 			r.FormValue("phone"))
 		http.Redirect(w, r, "/contacts", http.StatusFound)
 		return
+	} else if url[len(url)-1] == "delete" {
+		id, err = strconv.Atoi(url[len(url)-2])
+		if err != nil {
+			log.Fatal(err)
+		}
+		contact.Delete(id)
+		http.Redirect(w, r, "/contacts", http.StatusFound)
+		return
 	} else {
 		body = filepath.Join("templates", "show.html")
 		id, err = strconv.Atoi(url[len(url)-1])
