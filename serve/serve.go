@@ -39,10 +39,13 @@ func Contacts(w http.ResponseWriter, r *http.Request) {
 		Counter  string
 	}{
 		Contacts: func() []contact.Contact {
-			if term == "" {
-				return *contact.Ptr()
+			if term != "" {
+				found := contact.Search(term)
+				if len(found) > 0 {
+					return found
+				}
 			}
-			return contact.Search(term)
+			return *contact.Ptr()
 		}(),
 		Term:    term,
 		Counter: counter.PaddedCount(),
