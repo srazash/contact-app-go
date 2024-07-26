@@ -12,6 +12,10 @@ h2 {
     text-decoration: underline;
 }
 
+h3 {
+    text-decoration: underline;
+}
+
 .centre {
     text-align: center;
     justify-content: center;
@@ -36,4 +40,17 @@ h2 {
     font-size: x-large;
     font-weight: bold;
     border: 2px solid #FB0702;
+}
+
+.card {
+    padding: 12px;
+    align-self: center;
+    width: fit-content;
+    background-color: #eeeeee;
+    border: 1px solid #000000;
+}
+
+.space {
+    font-weight: bold;
+    padding-top: 1ch;
 }

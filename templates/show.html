@@ -1,16 +1,24 @@
 {{ define "title" }}contact.app :: contact {{ .Contact.Id }} {{ end }}
 
 {{ define "body" }}
-<h2>{{ .Contact.First }} {{ .Contact.Last }}</h2>
+<div class="card">
+    <h3>{{ .Contact.First }} {{ .Contact.Last }}</h3>
 
-<div>
-    <div><a href="tel:{{ .Contact.Phone }}">{{ .Contact.Phone }}</a></div>
-    <div><a href="mailto:{{ .Contact.Email }}">{{ .Contact.Email }}</a></div>
+    <div>
+        <div>Tel: <a href="tel:{{ .Contact.Phone }}">{{ .Contact.Phone }}</a></div>
+        <div>Email: <a href="mailto:{{ .Contact.Email }}">{{ .Contact.Email }}</a></div>
+    </div>
+
+    <div class="space">
+        <a href="/contacts/{{ .Contact.Id }}/edit">Edit</a>
+    </div>
+
+    <div class="space">
+        <a href="/contacts/{{ .Contact.Id }}/delete">Delete</a>
+    </div>
+
+    <div class="space">
+        <a href="/contacts">Back</a>
+    </div>
 </div>
-
-<p>
-    <a href="/contacts/{{ .Contact.Id }}/edit">Edit</a>
-    <a href="/contacts/{{ .Contact.Id }}/delete">Delete</a>
-    <a href="/contacts">Back</a>
-</p>
 {{ end }}
