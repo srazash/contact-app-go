@@ -58,45 +58,45 @@ func Contacts(w http.ResponseWriter, r *http.Request) {
 }
 
 func ContactsNew(w http.ResponseWriter, r *http.Request) {
-	layout := filepath.Join("templates", "layout.html")
-	contactnew := filepath.Join("templates", "new.html")
+	if r.Method == http.MethodGet {
+		layout := filepath.Join("templates", "layout.html")
+		contactnew := filepath.Join("templates", "new.html")
 
-	tmpl, err := template.ParseFiles(layout, contactnew)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		tmpl, err := template.ParseFiles(layout, contactnew)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		data := struct {
+			Counter string
+		}{
+			Counter: counter.PaddedCount(),
+		}
+
+		err = tmpl.ExecuteTemplate(w, "layout", data)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
-	}
+	} else if r.Method == http.MethodPost {
+		err := r.ParseForm()
+		if err != nil {
+			http.Error(w, "Failed to parse form", http.StatusBadRequest)
+			return
+		}
 
-	data := struct {
-		Counter string
-	}{
-		Counter: counter.PaddedCount(),
-	}
+		contact.Create(r.FormValue("first"),
+			r.FormValue("last"),
+			r.FormValue("email"),
+			r.FormValue("phone"))
 
-	err = tmpl.ExecuteTemplate(w, "layout", data)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-}
-
-func ContactsNewSave(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
+		http.Redirect(w, r, "/contacts", http.StatusFound)
+		return
+	} else {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-
-	err := r.ParseForm()
-	if err != nil {
-		http.Error(w, "Failed to parse form", http.StatusBadRequest)
-		return
-	}
-
-	contact.Create(r.FormValue("first"),
-		r.FormValue("last"),
-		r.FormValue("email"),
-		r.FormValue("phone"))
-
-	http.Redirect(w, r, "/contacts", http.StatusFound)
 }
 
 func ContactsShowEdit(w http.ResponseWriter, r *http.Request) {

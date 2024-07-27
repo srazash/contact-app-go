@@ -21,7 +21,6 @@ func main() {
 	http.HandleFunc("/", serve.Root)
 	http.HandleFunc("/contacts", serve.Contacts)
 	http.HandleFunc("/contacts/new", serve.ContactsNew)
-	http.HandleFunc("/contacts/new/save", serve.ContactsNewSave)
 	http.HandleFunc("/contacts/", serve.ContactsShowEdit)
 
 	port := ":3000"
