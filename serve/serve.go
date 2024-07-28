@@ -108,23 +108,25 @@ func ContactsShowEdit(w http.ResponseWriter, r *http.Request) {
 	var err error = errors.ErrUnsupported
 
 	if url[len(url)-1] == "edit" {
-		body = filepath.Join("templates", "edit.html")
-		id, err = strconv.Atoi(url[len(url)-2])
-		if err != nil {
-			log.Fatal(err)
+		if r.Method == http.MethodGet {
+			body = filepath.Join("templates", "edit.html")
+			id, err = strconv.Atoi(url[len(url)-2])
+			if err != nil {
+				log.Fatal(err)
+			}
+		} else if r.Method == http.MethodPost {
+			id, err = strconv.Atoi(url[len(url)-2])
+			if err != nil {
+				log.Fatal(err)
+			}
+			contact.Update(id,
+				r.FormValue("first"),
+				r.FormValue("last"),
+				r.FormValue("email"),
+				r.FormValue("phone"))
+			http.Redirect(w, r, "/contacts", http.StatusFound)
+			return
 		}
-	} else if url[len(url)-1] == "save" {
-		id, err = strconv.Atoi(url[len(url)-2])
-		if err != nil {
-			log.Fatal(err)
-		}
-		contact.Update(id,
-			r.FormValue("first"),
-			r.FormValue("last"),
-			r.FormValue("email"),
-			r.FormValue("phone"))
-		http.Redirect(w, r, "/contacts", http.StatusFound)
-		return
 	} else if url[len(url)-1] == "delete" {
 		id, err = strconv.Atoi(url[len(url)-2])
 		if err != nil {

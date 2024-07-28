@@ -1,7 +1,7 @@
 {{ define "title" }}contact.app :: edit contact {{ .Contact.Id }}{{ end }}
 
 {{ define "body" }}
-<form action="/contacts/edit/{{ .Contact.Id }}/save" method="post">
+<form action="/contacts/{{ .Contact.Id }}/edit" method="post">
     <fieldset>
         <legend>Contact Values</legend>
         <div class="table rows">
