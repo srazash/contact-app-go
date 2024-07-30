@@ -107,7 +107,25 @@ func ContactsShowEdit(w http.ResponseWriter, r *http.Request) {
 	var id int = 0
 	var err error = errors.ErrUnsupported
 
-	if url[len(url)-1] == "edit" {
+	action := func() string {
+		if len(url) == 3 {
+			id, err = strconv.Atoi(url[2])
+			if err != nil {
+				return url[2]
+			}
+			return ""
+		} else if len(url) == 4 {
+			id, err = strconv.Atoi(url[2])
+			if err != nil {
+				return url[2]
+			}
+			return url[3]
+		} else {
+			return url[2]
+		}
+	}()
+
+	if action == "edit" {
 		if r.Method == http.MethodGet {
 			body = filepath.Join("templates", "edit.html")
 			id, err = strconv.Atoi(url[len(url)-2])
@@ -115,10 +133,6 @@ func ContactsShowEdit(w http.ResponseWriter, r *http.Request) {
 				log.Fatal(err)
 			}
 		} else if r.Method == http.MethodPost {
-			id, err = strconv.Atoi(url[len(url)-2])
-			if err != nil {
-				log.Fatal(err)
-			}
 			contact.Update(id,
 				r.FormValue("first"),
 				r.FormValue("last"),
@@ -127,20 +141,15 @@ func ContactsShowEdit(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/contacts", http.StatusFound)
 			return
 		}
-	} else if url[len(url)-1] == "delete" {
-		id, err = strconv.Atoi(url[len(url)-2])
-		if err != nil {
-			log.Fatal(err)
-		}
+	} else if action == "delete" {
 		contact.Delete(id)
 		http.Redirect(w, r, "/contacts", http.StatusFound)
 		return
-	} else {
+	} else if action == "" {
 		body = filepath.Join("templates", "show.html")
-		id, err = strconv.Atoi(url[len(url)-1])
-		if err != nil {
-			log.Fatal(err)
-		}
+	} else {
+		http.Redirect(w, r, "/contacts", http.StatusPermanentRedirect)
+		return
 	}
 
 	tmpl, err := template.ParseFiles(layout, body)
