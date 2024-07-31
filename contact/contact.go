@@ -84,20 +84,29 @@ func Create(first string, last string, email string, phone string) {
 }
 
 func Update(id int, first, last, email, phone string) {
-	if first != "" {
-		DB[id-1].First = first
+	c := &DB[id-1]
+	ops := 0
+
+	if first != c.First {
+		c.First = first
+		ops++
 	}
-	if last != "" {
-		DB[id-1].Last = last
+	if last != c.Last {
+		c.Last = last
+		ops++
 	}
-	if email != "" {
-		DB[id-1].Email = email
+	if email != c.Email {
+		c.Email = email
+		ops++
 	}
-	if phone != "" {
-		DB[id-1].Phone = phone
+	if phone != c.Phone {
+		c.Phone = phone
+		ops++
 	}
 
-	Save()
+	if ops > 0 {
+		Save()
+	}
 }
 
 func Delete(id int) {
