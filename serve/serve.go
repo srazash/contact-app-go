@@ -100,6 +100,11 @@ func ContactsNew(w http.ResponseWriter, r *http.Request) {
 }
 
 func ContactsShowEdit(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path == "/contacts/" {
+		http.Redirect(w, r, "/contacts", http.StatusPermanentRedirect)
+		return
+	}
+
 	url := strings.Split(r.URL.Path, "/")
 
 	layout := filepath.Join("templates", "layout.html")
@@ -141,12 +146,14 @@ func ContactsShowEdit(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/contacts", http.StatusFound)
 			return
 		}
-	} else if action == "delete" {
-		contact.Delete(id)
-		http.Redirect(w, r, "/contacts", http.StatusFound)
-		return
 	} else if action == "" {
-		body = filepath.Join("templates", "show.html")
+		if r.Method == http.MethodGet {
+			body = filepath.Join("templates", "show.html")
+		} else if r.Method == http.MethodDelete {
+			contact.Delete(id)
+			http.Redirect(w, r, "/contacts", http.StatusFound)
+			return
+		}
 	} else {
 		http.Redirect(w, r, "/contacts", http.StatusPermanentRedirect)
 		return

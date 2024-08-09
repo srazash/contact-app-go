@@ -27,9 +27,7 @@
 </form>
 
 <div>
-    <form action="/contacts/{{ .Contact.Id }}/delete" method="post">
-        <button>Delete</button>
-    </form>
-    <a href="/contacts">Back</a>
+    <button hx-get="/contacts" hx-target="body" hx-replace-url="true">Back</button>
+    <button hx-delete="/contacts/{{ .Contact.Id }}" hx-target="body" hx-replace-url="true" class="danger">Delete</button>
 </div>
 {{ end }}
