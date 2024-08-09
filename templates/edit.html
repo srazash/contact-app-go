@@ -26,11 +26,10 @@
     </fieldset>
 </form>
 
-<div class="space">
-    <a href="/contacts/{{ .Contact.Id }}/delete" class="danger">Delete</a>
-</div>
-
-<p>
+<div>
+    <form action="/contacts/{{ .Contact.Id }}/delete" method="post">
+        <button>Delete</button>
+    </form>
     <a href="/contacts">Back</a>
-</p>
+</div>
 {{ end }}
