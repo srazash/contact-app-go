@@ -151,7 +151,7 @@ func ContactsShowEdit(w http.ResponseWriter, r *http.Request) {
 			body = filepath.Join("templates", "show.html")
 		} else if r.Method == http.MethodDelete {
 			contact.Delete(id)
-			http.Redirect(w, r, "/contacts", http.StatusFound)
+			http.Redirect(w, r, "/contacts", http.StatusSeeOther)
 			return
 		}
 	} else {
