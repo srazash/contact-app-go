@@ -27,7 +27,16 @@
 </form>
 
 <div>
-    <button hx-get="/contacts" hx-target="body" hx-replace-url="true">Back</button>
-    <button hx-delete="/contacts/{{ .Contact.Id }}" hx-target="body" hx-replace-url="true" class="danger">Delete</button>
+    <button hx-get="/contacts"
+        hx-target="body"
+        hx-push-url="true">
+        Back
+    </button>
+    <button hx-delete="/contacts/{{ .Contact.Id }}"
+        hx-target="body"
+        hx-push-url="true"
+        hx-confirm="Are you sure you want to delete the contact?">
+        Delete
+    </button>
 </div>
 {{ end }}
