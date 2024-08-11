@@ -4,6 +4,7 @@ import (
 	"contactapp/contact"
 	"contactapp/counter"
 	"errors"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -91,7 +92,7 @@ func ContactsNew(w http.ResponseWriter, r *http.Request) {
 			r.FormValue("email"),
 			r.FormValue("phone"))
 
-		http.Redirect(w, r, "/contacts", http.StatusFound)
+		http.Redirect(w, r, fmt.Sprintf("%s%d", "/contacts/", contact.GetTailId()), http.StatusFound)
 		return
 	} else {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -143,7 +144,7 @@ func ContactsShowEdit(w http.ResponseWriter, r *http.Request) {
 				r.FormValue("last"),
 				r.FormValue("email"),
 				r.FormValue("phone"))
-			http.Redirect(w, r, "/contacts", http.StatusFound)
+			http.Redirect(w, r, fmt.Sprintf("%s%d", "/contacts/", id), http.StatusFound)
 			return
 		}
 	} else if action == "" {

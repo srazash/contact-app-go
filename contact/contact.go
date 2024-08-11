@@ -154,3 +154,7 @@ func Search(term string) []Contact {
 func contactString(c Contact) string {
 	return fmt.Sprintf("%s %s %s %s", c.First, c.Last, c.Email, c.Phone)
 }
+
+func GetTailId() int {
+	return nextId - 1
+}
