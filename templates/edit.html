@@ -8,18 +8,22 @@
             <p>
                 <label for="first" class="required">First Name</label>
                 <input name="first" id="first" type="text" placeholder="First Name" value="{{ .Contact.First }}" required>
+                <span class="error">{{ .Error.First }}</span>
             </p>
             <p>
                 <label for="last" class="required">Last Name</label>
                 <input name="last" id="last" type="text" placeholder="Last Name" value="{{ .Contact.Last }}" required>
+                <span class="error">{{ .Error.Last }}</span>
             </p>
             <p>
                 <label for="email">Email</label>
                 <input name="email" id="email" type="text" placeholder="Email" value="{{ .Contact.Email }}">
+                <span class="error">{{ .Error.Email }}</span>
             </p>
             <p>
                 <label for="phone">Phone</label>
                 <input name="phone" id="phone" type="text" placeholder="Phone" value="{{ .Contact.Phone }}">
+                <span class="error">{{ .Error.Phone }}</span>
             </p>
         </div>
         <button>Save</button>

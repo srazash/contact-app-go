@@ -3,9 +3,11 @@ package main
 import (
 	"contactapp/contact"
 	"contactapp/counter"
-	"contactapp/serve"
 	"log"
 	"net/http"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
@@ -15,15 +17,31 @@ func main() {
 	log.Printf("loaded %d contacts\n", len(*ptrDB))
 	log.Printf("loaded %d visitors\n", counter.Count)
 
-	static := http.FileServer(http.Dir("static"))
-	http.Handle("/static/", http.StripPrefix("/static/", static))
+	// static := http.FileServer(http.Dir("static"))
+	// http.Handle("/static/", http.StripPrefix("/static/", static))
 
-	http.HandleFunc("/", serve.Root)
-	http.HandleFunc("/contacts", serve.Contacts)
-	http.HandleFunc("/contacts/new", serve.ContactsNew)
-	http.HandleFunc("/contacts/", serve.ContactsShowEdit)
+	// http.HandleFunc("/", serve.Root)
+	// http.HandleFunc("/contacts", serve.Contacts)
+	// http.HandleFunc("/contacts/new", serve.ContactsNew)
+	// http.HandleFunc("/contacts/", serve.ContactsShowEdit)
 
-	port := ":3000"
-	log.Printf("http://localhost%s\n", port)
-	log.Fatal(http.ListenAndServe(port, nil))
+	// port := ":3000"
+	// log.Printf("http://localhost%s\n", port)
+	// log.Fatal(http.ListenAndServe(port, nil))
+
+	e := echo.New()
+
+	e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
+		Level: 5,
+	}))
+
+	e.GET("/", func(c echo.Context) error {
+		return c.Redirect(http.StatusFound, "/contacts")
+	})
+
+	e.GET("/contacts", func(c echo.Context) error {
+		return c.String(http.StatusFound, "I live!")
+	})
+
+	e.Logger.Fatal(e.Start(":3000"))
 }
