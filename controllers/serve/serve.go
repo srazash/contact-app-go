@@ -1,8 +1,8 @@
 package serve
 
 import (
-	"contactapp/contact"
-	"contactapp/counter"
+	"contactapp/controllers/counter"
+	"contactapp/models/contact"
 	"errors"
 	"fmt"
 	"html/template"

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"contactapp/contact"
-	"contactapp/counter"
+	"contactapp/controllers/counter"
+	"contactapp/models/contact"
 	"log"
 	"net/http"
 
@@ -31,9 +31,11 @@ func main() {
 
 	e := echo.New()
 
+	e.Use(middleware.Logger())
 	e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
 		Level: 5,
 	}))
+	e.Static("/", "static")
 
 	e.GET("/", func(c echo.Context) error {
 		return c.Redirect(http.StatusFound, "/contacts")
