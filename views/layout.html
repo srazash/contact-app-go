@@ -1,32 +1,32 @@
-{{ define "layout" }}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <title>{{ template "title" . }}</title>
-    <script src="/static/lib/htmx.js"></script>
-    <script src="/static/lib/_hyperscript.js"></script>
-    <link rel="stylesheet" href="/static/css/site.css">
-  </head>
-  <body hx-boost="true">
-    <div class="centre">
-      <h1>contact.app</h1>
-      <img src="/static/image/pc.gif" alt="Personal Computer"/>
-      <h2>a digital rolodex on <i>your</i> personal computer!</h2>
-    </div>
-    <hr>
-    {{ template "body" . }}
-    <hr>
-    <div class="centre">
-      <div><img src="/static/image/itchyscratchy.gif" alt="Itchy & Scratchy"/></div>
-      <div>
-        <img src="/static/image/notepad.gif" alt="Created with Notepad"/>
-        <img src="/static/image/netscape.gif" alt="Netscape"/>
-        <img src="/static/image/ie.gif" alt="Internet Explorer"/>
-        <img src="/static/image/noframes.gif" alt="Campaign Against Frames"/>
-        <img src="/static/image/htmx.gif" alt="Created with HTMX"/>
-      </div>
-      <span class="counter">{{ .Counter }}</span>
-    </div>
-  </body>
+    <head>
+        <title>{{ .Title }}</title>
+        <script src="/lib/htmx.js"></script>
+        <script src="/lib/_hyperscript.js"></script>
+        <link rel="stylesheet" href="/css/site.css" />
+    </head>
+    <body hx-boost="true">
+        <div class="centre">
+            <h1>contact.app</h1>
+            <img src="/image/pc.gif" alt="Personal Computer" />
+            <h2>a digital rolodex on <i>your</i> personal computer!</h2>
+        </div>
+        <hr />
+        {{ template "content" . }}
+        <hr />
+        <div class="centre">
+            <div>
+                <img src="/image/itchyscratchy.gif" alt="Itchy & Scratchy" />
+            </div>
+            <div>
+                <img src="/image/notepad.gif" alt="Created with Notepad" />
+                <img src="/image/netscape.gif" alt="Netscape" />
+                <img src="/image/ie.gif" alt="Internet Explorer" />
+                <img src="/image/noframes.gif" alt="Campaign Against Frames" />
+                <img src="/image/htmx.gif" alt="Created with HTMX" />
+            </div>
+            <span class="counter">{{ .Counter }}</span>
+        </div>
+    </body>
 </html>
-{{ end }}

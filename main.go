@@ -3,7 +3,6 @@ package main
 import (
 	"contactapp/controllers/counter"
 	"contactapp/models/contact"
-	"fmt"
 	"html/template"
 	"io"
 	"net/http"
@@ -12,16 +11,12 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-type Templates struct {
-	template *template.Template
+type TemplateRegistry struct {
+	templates map[string]*template.Template
 }
 
-func (t *Templates) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	err := t.template.ExecuteTemplate(w, "layout", data)
-	if err != nil {
-		c.Logger().Errorf("template rendering error: %v", err)
-	}
-	return err
+func (t *TemplateRegistry) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates[name].Execute(w, data)
 }
 
 func main() {
@@ -34,42 +29,28 @@ func main() {
 	e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
 		Level: 5,
 	}))
-	e.Static("/static", "static")
+	e.Static("/", "static")
 
-	templates, err := template.ParseGlob("views/*.html")
-	if err != nil {
-		fmt.Printf("Error parsing templates: %v\n", err)
-		return // or handle the error appropriately
+	templates := make(map[string]*template.Template)
+	templates["index"] = template.Must(template.ParseFiles("views/layout.html", "views/index.html"))
+
+	e.Renderer = &TemplateRegistry{
+		templates: templates,
 	}
-
-	renderer := &Templates{
-		template: templates,
-	}
-
-	fmt.Printf("Number of templates loaded: %d\n", len(templates.Templates()))
-
-	e.Renderer = renderer
 
 	e.GET("/", func(c echo.Context) error {
+		counter.Increment()
 		return c.Redirect(http.StatusFound, "/contacts")
 	})
 
 	e.GET("/contacts", func(c echo.Context) error {
 		data := map[string]interface{}{
+			"Title":    "contacts.app",
 			"Term":     "",
 			"Contacts": *contact.Ptr(),
-			"Counter":  counter.Count,
-			"Debug":    "This is a debug message",
+			"Counter":  counter.PaddedCount(),
 		}
-		err := c.Render(http.StatusOK, "index.html", data)
-		if err != nil {
-			return c.String(http.StatusInternalServerError, "Template error: "+err.Error())
-		}
-		return nil
-	})
-
-	e.GET("/debug", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, "<h1>Debug Page</h1>")
+		return c.Render(http.StatusOK, "index", data)
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))

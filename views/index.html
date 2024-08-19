@@ -1,13 +1,11 @@
-{{ define "title" }}contacts.app{{ end }}
-
-{{ define "body" }}
+{{ define "content" }}
 <form action="/contacts" method="get">
     <fieldset>
         <legend>Contact Search</legend>
         <p>
             <label for="search">Search Term</label>
-            <input id="search" type="search" name="q" value='{{ .Term }}'/>
-            <input type="submit" value="Search"/>
+            <input id="search" type="search" name="q" value="{{ .Term }}" />
+            <input type="submit" value="Search" />
             <a href="/contacts">Reset</a>
         </p>
     </fieldset>
@@ -22,21 +20,20 @@
             <th>Email</th>
             <th></th>
         </tr>
-        </thead>
-        <tbody>
+    </thead>
+    <tbody>
         {{ range .Contacts }}
-            <tr>
-                <td>{{ .First }}</td>
-                <td>{{ .Last }}</td>
-                <td><a href="tel:{{ .Phone }}">{{ .Phone }}</a></td>
-                <td><a href="mailto:{{ .Email }}">{{ .Email }}</a></td>
-                <td><a href="/contacts/{{ .Id }}">Show</a></td>
-                <td><a href="/contacts/{{ .Id }}/edit">Edit</a></td>
-            </tr>
+        <tr>
+            <td>{{ .First }}</td>
+            <td>{{ .Last }}</td>
+            <td><a href="tel:{{ .Phone }}">{{ .Phone }}</a></td>
+            <td><a href="mailto:{{ .Email }}">{{ .Email }}</a></td>
+            <td><a href="/contacts/{{ .Id }}">Show</a></td>
+            <td><a href="/contacts/{{ .Id }}/edit">Edit</a></td>
+        </tr>
         {{ end }}
     </tbody>
 </table>
-
 
 <p>
     <a href="/contacts/new">Add Contact</a>

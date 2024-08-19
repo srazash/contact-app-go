@@ -1,5 +1,5 @@
 body {
-    background-image: url("/static/image/bg.gif");
+    background-image: url("/image/bg.gif");
 }
 
 h1 {
@@ -25,21 +25,21 @@ h3 {
 }
 
 .required::after {
-    content:"*";
-    font-weight:bold;
-    color:red;
+    content: "*";
+    font-weight: bold;
+    color: red;
 }
 
 .counter {
-    padding-inline:4px;
+    padding-inline: 4px;
     align-self: center;
     width: fit-content;
     background-color: #000000;
-    color: #2CFF00;
-    font-family: 'Courier New', Courier, monospace;
+    color: #2cff00;
+    font-family: "Courier New", Courier, monospace;
     font-size: x-large;
     font-weight: bold;
-    border: 2px solid #FB0702;
+    border: 2px solid #fb0702;
 }
 
 .card {
