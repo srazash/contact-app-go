@@ -45,7 +45,7 @@ func main() {
 
 	e.GET("/contacts", func(c echo.Context) error {
 		data := map[string]interface{}{
-			"Title":    "contacts.app",
+			"Title":    "all contacts",
 			"Term":     "",
 			"Contacts": *contact.Ptr(),
 			"Counter":  counter.PaddedCount(),
