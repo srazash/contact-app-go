@@ -33,6 +33,7 @@ func main() {
 
 	templates := make(map[string]*template.Template)
 	templates["index"] = template.Must(template.ParseFiles("views/layout.html", "views/index.html"))
+	templates["new"] = template.Must(template.ParseFiles("views/layout.html", "views/new.html"))
 
 	e.Renderer = &TemplateRegistry{
 		templates: templates,
@@ -51,6 +52,14 @@ func main() {
 			"Counter":  counter.PaddedCount(),
 		}
 		return c.Render(http.StatusOK, "index", data)
+	})
+
+	e.GET("/contacts/new", func(c echo.Context) error {
+		data := map[string]interface{}{
+			"Title":   "new contact",
+			"Counter": counter.PaddedCount(),
+		}
+		return c.Render(http.StatusOK, "new", data)
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))
