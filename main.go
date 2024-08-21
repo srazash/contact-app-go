@@ -65,10 +65,18 @@ func main() {
 			return ""
 		}()
 
+		reset := func() string {
+			if term != "" {
+				return "Reset"
+			}
+			return ""
+		}()
+
 		data := map[string]interface{}{
 			"Title":    "all contacts",
 			"Term":     term,
 			"Message":  message,
+			"Reset":    reset,
 			"Contacts": contacts,
 			"Counter":  counter.PaddedCount(),
 		}
