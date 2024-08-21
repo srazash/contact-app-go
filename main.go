@@ -58,13 +58,8 @@ func main() {
 
 	e.GET("/contacts/new", func(c echo.Context) error {
 		data := map[string]interface{}{
-			"Title": "new contact",
-			"Errors": map[string]string{
-				"First": "",
-				"Last":  "",
-				"Email": "",
-				"Phone": "",
-			},
+			"Title":   "new contact",
+			"Errors":  make(map[string]string),
 			"Counter": counter.PaddedCount(),
 		}
 		return c.Render(http.StatusOK, "new", data)
