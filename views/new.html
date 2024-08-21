@@ -5,22 +5,22 @@
         <div class="table rows">
             <p>
                 <label for="first" class="required">First Name</label>
-                <input name="first" id="first" type="text" placeholder="First Name" required>
+                <input name="first" id="first" type="text" placeholder="First Name" value="{{ .Values.First }}">
                 <span class="error">{{ .Errors.First }}</span>
             </p>
             <p>
                 <label for="last" class="required">Last Name</label>
-                <input name="last" id="last" type="text" placeholder="Last Name" required>
+                <input name="last" id="last" type="text" placeholder="Last Name" value="{{ .Values.Last }}">
                 <span class="error">{{ .Errors.Last }}</span>
             </p>
             <p>
                 <label for="email">Email</label>
-                <input name="email" id="email" type="text" placeholder="Email">
+                <input name="email" id="email" type="text" placeholder="Email" value="{{ .Values.Email }}">
                 <span class="error">{{ .Errors.Email }}</span>
             </p>
             <p>
                 <label for="phone">Phone</label>
-                <input name="phone" id="phone" type="text" placeholder="Phone">
+                <input name="phone" id="phone" type="text" placeholder="Phone" value="{{ .Values.Phone }}">
                 <span class="error">{{ .Errors.Phone }}</span>
             </p>
         </div>

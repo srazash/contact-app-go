@@ -67,7 +67,7 @@ func Save() {
 	}
 }
 
-func Create(first string, last string, email string, phone string) {
+func Create(first string, last string, email string, phone string) int {
 	contact := Contact{
 		Id:    nextId,
 		First: first,
@@ -77,10 +77,10 @@ func Create(first string, last string, email string, phone string) {
 	}
 
 	nextId++
-
 	DB = append(DB, contact)
-
 	Save()
+
+	return contact.Id
 }
 
 func Update(id int, first, last, email, phone string) {

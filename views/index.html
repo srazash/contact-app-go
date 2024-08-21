@@ -18,7 +18,7 @@
             <th>Last</th>
             <th>Phone</th>
             <th>Email</th>
-            <th></th>
+            <th>Commands</th>
         </tr>
     </thead>
     <tbody>
@@ -28,8 +28,10 @@
             <td>{{ .Last }}</td>
             <td><a href="tel:{{ .Phone }}">{{ .Phone }}</a></td>
             <td><a href="mailto:{{ .Email }}">{{ .Email }}</a></td>
-            <td><a href="/contacts/{{ .Id }}">View</a></td>
-            <td><a href="/contacts/{{ .Id }}/edit">Edit</a></td>
+            <td>
+                <a href="/contacts/{{ .Id }}">View</a>
+                <a href="/contacts/{{ .Id }}/edit">Edit</a>
+            </td>
         </tr>
         {{ end }}
     </tbody>

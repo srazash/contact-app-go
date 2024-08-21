@@ -3,6 +3,7 @@ package main
 import (
 	"contactapp/controllers/counter"
 	"contactapp/models/contact"
+	"fmt"
 	"html/template"
 	"io"
 	"net/http"
@@ -59,6 +60,7 @@ func main() {
 	e.GET("/contacts/new", func(c echo.Context) error {
 		data := map[string]interface{}{
 			"Title":   "new contact",
+			"Values":  make(map[string]string),
 			"Errors":  make(map[string]string),
 			"Counter": counter.PaddedCount(),
 		}
@@ -66,7 +68,41 @@ func main() {
 	})
 
 	e.POST("/contacts/new", func(c echo.Context) error {
-		return nil
+		errors := make(map[string]string)
+		values := make(map[string]string)
+
+		values["First"] = c.FormValue("first")
+		values["Last"] = c.FormValue("last")
+		values["Email"] = c.FormValue("email")
+		values["Phone"] = c.FormValue("phone")
+
+		switch {
+		case values["First"] == "":
+			errors["First"] = "First name is required"
+			fallthrough
+		case values["Last"] == "":
+			errors["Last"] = "Last name is required"
+			fallthrough
+		case values["Email"] == "":
+			errors["Email"] = "Email is required"
+			fallthrough
+		case values["Phone"] == "":
+			errors["Phone"] = "Phone number is required"
+		}
+
+		if len(errors) != 0 {
+			data := map[string]interface{}{
+				"Title":   "new contact",
+				"Values":  values,
+				"Errors":  errors,
+				"Counter": counter.PaddedCount(),
+			}
+			return c.Render(http.StatusOK, "new", data)
+		}
+
+		contact_id := contact.Create(values["First"], values["Last"], values["Email"], values["Phone"])
+		path := fmt.Sprintf("/contacts/%d", contact_id)
+		return c.Redirect(http.StatusFound, path)
 	})
 
 	e.GET("/contacts/:contact_id", func(c echo.Context) error {
