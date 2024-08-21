@@ -1,6 +1,4 @@
-{{ define "title" }}contact.app :: contact {{ .Contact.Id }} {{ end }}
-
-{{ define "body" }}
+{{ define "content" }}
 <div class="card">
     <h3>{{ .Contact.First }} {{ .Contact.Last }}</h3>
 
@@ -14,7 +12,7 @@
     </div>
 
     <div class="space">
-        <a href="/contacts">Back</a>
+        <a href="/contacts">Home</a>
     </div>
 </div>
 {{ end }}

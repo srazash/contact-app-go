@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"io"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -34,6 +35,7 @@ func main() {
 	templates := make(map[string]*template.Template)
 	templates["index"] = template.Must(template.ParseFiles("views/layout.html", "views/index.html"))
 	templates["new"] = template.Must(template.ParseFiles("views/layout.html", "views/new.html"))
+	templates["view"] = template.Must(template.ParseFiles("views/layout.html", "views/view.html"))
 
 	e.Renderer = &TemplateRegistry{
 		templates: templates,
@@ -56,10 +58,38 @@ func main() {
 
 	e.GET("/contacts/new", func(c echo.Context) error {
 		data := map[string]interface{}{
-			"Title":   "new contact",
+			"Title": "new contact",
+			"Errors": map[string]string{
+				"First": "",
+				"Last":  "",
+				"Email": "",
+				"Phone": "",
+			},
 			"Counter": counter.PaddedCount(),
 		}
 		return c.Render(http.StatusOK, "new", data)
+	})
+
+	e.POST("/contacts/new", func(c echo.Context) error {
+		return nil
+	})
+
+	e.GET("/contacts/:contact_id", func(c echo.Context) error {
+		contact_id, err := strconv.Atoi(c.Param("contact_id"))
+		if err != nil {
+			return c.Redirect(http.StatusSeeOther, "/contacts")
+		}
+		con, err := contact.Find(contact_id)
+		if err != nil {
+			return c.Redirect(http.StatusNotFound, "/contacts")
+		}
+		data := map[string]interface{}{
+			"Title":   "all contacts",
+			"Term":    "",
+			"Contact": con,
+			"Counter": counter.PaddedCount(),
+		}
+		return c.Render(http.StatusOK, "view", data)
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))
