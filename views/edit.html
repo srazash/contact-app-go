@@ -1,29 +1,27 @@
-{{ define "title" }}contact.app :: edit contact {{ .Contact.Id }}{{ end }}
-
-{{ define "body" }}
+{{ define "content" }}
 <form action="/contacts/{{ .Contact.Id }}/edit" method="post">
     <fieldset>
         <legend>Contact Values</legend>
         <div class="table rows">
             <p>
                 <label for="first" class="required">First Name</label>
-                <input name="first" id="first" type="text" placeholder="First Name" value="{{ .Contact.First }}" required>
-                <span class="error">{{ .Error.First }}</span>
+                <input name="first" id="first" type="text" placeholder="First Name" value="{{ .Contact.First }}">
+                <span class="error">{{ .Errors.First }}</span>
             </p>
             <p>
                 <label for="last" class="required">Last Name</label>
-                <input name="last" id="last" type="text" placeholder="Last Name" value="{{ .Contact.Last }}" required>
-                <span class="error">{{ .Error.Last }}</span>
+                <input name="last" id="last" type="text" placeholder="Last Name" value="{{ .Contact.Last }}">
+                <span class="error">{{ .Errors.Last }}</span>
             </p>
             <p>
                 <label for="email">Email</label>
                 <input name="email" id="email" type="text" placeholder="Email" value="{{ .Contact.Email }}">
-                <span class="error">{{ .Error.Email }}</span>
+                <span class="error">{{ .Errors.Email }}</span>
             </p>
             <p>
                 <label for="phone">Phone</label>
                 <input name="phone" id="phone" type="text" placeholder="Phone" value="{{ .Contact.Phone }}">
-                <span class="error">{{ .Error.Phone }}</span>
+                <span class="error">{{ .Errors.Phone }}</span>
             </p>
         </div>
         <button>Save</button>
@@ -34,7 +32,7 @@
     <button hx-get="/contacts"
         hx-target="body"
         hx-push-url="true">
-        Back
+        Home
     </button>
     <button hx-delete="/contacts/{{ .Contact.Id }}"
         hx-target="body"

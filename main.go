@@ -37,6 +37,7 @@ func main() {
 	templates["index"] = template.Must(template.ParseFiles("views/layout.html", "views/index.html"))
 	templates["new"] = template.Must(template.ParseFiles("views/layout.html", "views/new.html"))
 	templates["view"] = template.Must(template.ParseFiles("views/layout.html", "views/view.html"))
+	templates["edit"] = template.Must(template.ParseFiles("views/layout.html", "views/edit.html"))
 
 	e.Renderer = &TemplateRegistry{
 		templates: templates,
@@ -115,12 +116,81 @@ func main() {
 			return c.Redirect(http.StatusNotFound, "/contacts")
 		}
 		data := map[string]interface{}{
-			"Title":   "all contacts",
-			"Term":    "",
+			"Title":   fmt.Sprintf("view contact %d", con.Id),
 			"Contact": con,
 			"Counter": counter.PaddedCount(),
 		}
 		return c.Render(http.StatusOK, "view", data)
+	})
+
+	e.GET("/contacts/:contact_id/edit", func(c echo.Context) error {
+		contact_id, err := strconv.Atoi(c.Param("contact_id"))
+		if err != nil {
+			return c.Redirect(http.StatusSeeOther, "/contacts")
+		}
+		con, err := contact.Find(contact_id)
+		if err != nil {
+			return c.Redirect(http.StatusNotFound, "/contacts")
+		}
+		data := map[string]interface{}{
+			"Title":   fmt.Sprintf("edit contact %d", con.Id),
+			"Contact": con,
+			"Counter": counter.PaddedCount(),
+		}
+		return c.Render(http.StatusOK, "edit", data)
+	})
+
+	e.POST("/contacts/:contact_id/edit", func(c echo.Context) error {
+		contact_id, err := strconv.Atoi(c.Param("contact_id"))
+		if err != nil {
+			return c.Redirect(http.StatusSeeOther, "/contacts")
+		}
+
+		errors := make(map[string]string)
+		values := make(map[string]string)
+
+		values["First"] = c.FormValue("first")
+		values["Last"] = c.FormValue("last")
+		values["Email"] = c.FormValue("email")
+		values["Phone"] = c.FormValue("phone")
+
+		switch {
+		case values["First"] == "":
+			errors["First"] = "First name is required"
+			fallthrough
+		case values["Last"] == "":
+			errors["Last"] = "Last name is required"
+			fallthrough
+		case values["Email"] == "":
+			errors["Email"] = "Email is required"
+			fallthrough
+		case values["Phone"] == "":
+			errors["Phone"] = "Phone number is required"
+		}
+
+		if len(errors) != 0 {
+			data := map[string]interface{}{
+				"Title":   "new contact",
+				"Values":  values,
+				"Errors":  errors,
+				"Counter": counter.PaddedCount(),
+			}
+			return c.Render(http.StatusOK, "edit", data)
+		}
+
+		contact.Update(contact_id, values["First"], values["Last"], values["Email"], values["Phone"])
+		path := fmt.Sprintf("/contacts/%d", contact_id)
+		return c.Redirect(http.StatusFound, path)
+	})
+
+	e.DELETE("/contacts/:contact_id", func(c echo.Context) error {
+		contact_id, err := strconv.Atoi(c.Param("contact_id"))
+		if err != nil {
+			return c.Redirect(http.StatusSeeOther, "/contacts")
+		}
+
+		contact.Delete(contact_id)
+		return c.Redirect(http.StatusSeeOther, "/contacts")
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))
