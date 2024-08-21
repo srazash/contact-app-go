@@ -142,8 +142,9 @@ func Search(term string) []Contact {
 	results := []Contact{}
 
 	for i := range DB {
-		c := contactString(DB[i])
-		if strings.Contains(c, term) {
+		t := strings.ToLower(term)
+		c := strings.ToLower(contactString(DB[i]))
+		if strings.Contains(c, t) {
 			results = append(results, DB[i])
 		}
 	}

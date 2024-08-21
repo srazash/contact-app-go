@@ -49,10 +49,27 @@ func main() {
 	})
 
 	e.GET("/contacts", func(c echo.Context) error {
+		term := c.QueryParam("q")
+
+		contacts := func() []contact.Contact {
+			if term != "" {
+				return contact.Search(term)
+			}
+			return *contact.Ptr()
+		}()
+
+		message := func() string {
+			if term != "" {
+				return fmt.Sprintf("Showing results for search term: \"%s\", %d found", term, len(contacts))
+			}
+			return ""
+		}()
+
 		data := map[string]interface{}{
 			"Title":    "all contacts",
-			"Term":     "",
-			"Contacts": *contact.Ptr(),
+			"Term":     term,
+			"Message":  message,
+			"Contacts": contacts,
 			"Counter":  counter.PaddedCount(),
 		}
 		return c.Render(http.StatusOK, "index", data)
