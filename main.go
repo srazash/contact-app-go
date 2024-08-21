@@ -51,6 +51,13 @@ func main() {
 	e.GET("/contacts", func(c echo.Context) error {
 		term := c.QueryParam("q")
 
+		title := func() string {
+			if term != "" {
+				return fmt.Sprintf("search results for \"%s\"", term)
+			}
+			return "all contacts"
+		}()
+
 		contacts := func() []contact.Contact {
 			if term != "" {
 				return contact.Search(term)
@@ -73,7 +80,7 @@ func main() {
 		}()
 
 		data := map[string]interface{}{
-			"Title":    "all contacts",
+			"Title":    title,
 			"Term":     term,
 			"Message":  message,
 			"Reset":    reset,
