@@ -109,17 +109,16 @@ func main() {
 		values["Email"] = c.FormValue("email")
 		values["Phone"] = c.FormValue("phone")
 
-		switch {
-		case values["First"] == "":
+		if values["First"] == "" {
 			errors["First"] = "First name is required"
-			fallthrough
-		case values["Last"] == "":
+		}
+		if values["Last"] == "" {
 			errors["Last"] = "Last name is required"
-			fallthrough
-		case values["Email"] == "":
+		}
+		if values["Email"] == "" {
 			errors["Email"] = "Email is required"
-			fallthrough
-		case values["Phone"] == "":
+		}
+		if values["Phone"] == "" {
 			errors["Phone"] = "Phone number is required"
 		}
 
