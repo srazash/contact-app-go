@@ -101,7 +101,6 @@ func main() {
 	})
 
 	e.POST("/contacts/new", func(c echo.Context) error {
-		errors := make(map[string]string)
 		values := make(map[string]string)
 
 		values["First"] = c.FormValue("first")
@@ -109,18 +108,7 @@ func main() {
 		values["Email"] = c.FormValue("email")
 		values["Phone"] = c.FormValue("phone")
 
-		if values["First"] == "" {
-			errors["First"] = "First name is required"
-		}
-		if values["Last"] == "" {
-			errors["Last"] = "Last name is required"
-		}
-		if values["Email"] == "" {
-			errors["Email"] = "Email is required"
-		}
-		if values["Phone"] == "" {
-			errors["Phone"] = "Phone number is required"
-		}
+		errors := contact.ValidateForm(values)
 
 		if len(errors) != 0 {
 			data := map[string]interface{}{
