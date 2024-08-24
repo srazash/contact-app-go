@@ -12,6 +12,7 @@ import (
 const DBFILE string = "contacts.json"
 
 var DB []Contact = []Contact{}
+var EMAIL = make(map[string]bool)
 var nextId int = 1
 
 type Contact struct {
@@ -46,6 +47,10 @@ func Load() {
 		panic(err)
 	}
 
+	for _, c := range DB {
+		EMAIL[c.Email] = true
+	}
+
 	nextId += len(DB)
 }
 
@@ -78,6 +83,7 @@ func Create(first string, last string, email string, phone string) int {
 
 	nextId++
 	DB = append(DB, contact)
+	EMAIL[email] = true
 	Save()
 
 	return contact.Id
@@ -95,6 +101,9 @@ func ValidateForm(values *map[string]string) map[string]string {
 	}
 	if v["Email"] == "" {
 		errors["Email"] = "Email is required"
+	}
+	if EMAIL[v["Email"]] {
+		errors["Email"] = "Email must be unique"
 	}
 	if v["Phone"] == "" {
 		errors["Phone"] = "Phone number is required"
