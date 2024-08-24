@@ -112,6 +112,16 @@ func ValidateForm(values *map[string]string) map[string]string {
 	return errors
 }
 
+func ValidateEmail(email string) string {
+	if email == "" {
+		return "Email is required"
+	}
+	if EMAIL[email] {
+		return "Email must be unique"
+	}
+	return ""
+}
+
 func Update(id int, first, last, email, phone string) {
 	c := &DB[id-1]
 	ops := 0

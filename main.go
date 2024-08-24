@@ -125,6 +125,12 @@ func main() {
 		return c.Redirect(http.StatusFound, path)
 	})
 
+	e.GET("/contacts/new/email", func(c echo.Context) error {
+		email := c.FormValue("email")
+		email_error := contact.ValidateEmail(email)
+		return c.String(http.StatusOK, email_error)
+	})
+
 	e.GET("/contacts/:contact_id", func(c echo.Context) error {
 		contact_id, err := strconv.Atoi(c.Param("contact_id"))
 		if err != nil {
