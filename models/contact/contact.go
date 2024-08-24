@@ -83,19 +83,20 @@ func Create(first string, last string, email string, phone string) int {
 	return contact.Id
 }
 
-func ValidateForm(values map[string]string) map[string]string {
+func ValidateForm(values *map[string]string) map[string]string {
+	v := *values
 	errors := make(map[string]string)
 
-	if values["First"] == "" {
+	if v["First"] == "" {
 		errors["First"] = "First name is required"
 	}
-	if values["Last"] == "" {
+	if v["Last"] == "" {
 		errors["Last"] = "Last name is required"
 	}
-	if values["Email"] == "" {
+	if v["Email"] == "" {
 		errors["Email"] = "Email is required"
 	}
-	if values["Phone"] == "" {
+	if v["Phone"] == "" {
 		errors["Phone"] = "Phone number is required"
 	}
 

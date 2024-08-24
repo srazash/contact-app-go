@@ -108,7 +108,7 @@ func main() {
 		values["Email"] = c.FormValue("email")
 		values["Phone"] = c.FormValue("phone")
 
-		errors := contact.ValidateForm(values)
+		errors := contact.ValidateForm(&values)
 
 		if len(errors) != 0 {
 			data := map[string]interface{}{
