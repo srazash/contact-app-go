@@ -18,7 +18,7 @@
                 <input name="email" id="email" type="email"
                     hx-get="/contacts/new/email"
                     hx-target="next .error"
-                    hx-trigger="change, keyup delay:250ms"
+                    hx-trigger="change, keyup delay:250ms changed"
                     placeholder="Email" value="{{ .Values.Email }}">
                 <span class="error">{{ .Errors.Email }}</span>
             </p>
