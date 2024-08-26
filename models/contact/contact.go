@@ -202,3 +202,28 @@ func GetTailId() int {
 func ContactsCount() int {
 	return len(DB)
 }
+
+func PaginatedContacts(page int, items int) []Contact {
+	start := (page - 1) * items
+	end := start + items
+
+	if start >= len(DB) {
+		return []Contact{}
+	}
+
+	if end > len(DB) {
+		end = len(DB)
+	}
+
+	return DB[start:end]
+}
+
+func NextPage(page int, items int) bool {
+	end := (page-1)*items + items
+
+	return end <= len(DB)
+}
+
+func PrevPage(page int) bool {
+	return page > 1
+}
