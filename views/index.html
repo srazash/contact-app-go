@@ -38,6 +38,17 @@
     </tbody>
 </table>
 
+<div>
+    <span style="float:right">
+        {{ if .Page > 1 }}
+        <a href="/contacts?page={{ .Page - 1 }}">Previous</a>
+        {{ end }}
+        {{ if .ContactsCount == 10 }}
+        <a href="/contacts?page={{ page + 1 }}">Next</a>
+        {{ end }}
+    </span>
+</div>
+
 <p>
     <a href="/contacts/new">Add Contact</a>
 </p>
