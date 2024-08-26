@@ -39,17 +39,20 @@
 </table>
 
 <div>
-    <span style="float:right">
-        {{ if .Page > 1 }}
-        <a href="/contacts?page={{ .Page - 1 }}">Previous</a>
-        {{ end }}
-        {{ if .ContactsCount == 10 }}
-        <a href="/contacts?page={{ page + 1 }}">Next</a>
-        {{ end }}
-    </span>
+    {{ if .HasPrevPage }}
+    <a href="/contacts?page={{ .PrevPage }}">Previous Page</a>
+    {{ else }}
+    Previous Page
+    {{ end }}
+    ::
+    {{ if .HasNextPage }}
+    <a href="/contacts?page={{ .NextPage }}">Next Page</a>
+    {{ else }}
+    Next Page
+    {{ end }}
 </div>
 
-<p>
+<div>
     <a href="/contacts/new">Add Contact</a>
-</p>
+</div>
 {{ end }}

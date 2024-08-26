@@ -198,3 +198,7 @@ func contactString(c Contact) string {
 func GetTailId() int {
 	return nextId - 1
 }
+
+func ContactsCount() int {
+	return len(DB)
+}

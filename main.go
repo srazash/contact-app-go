@@ -50,6 +50,11 @@ func main() {
 
 	e.GET("/contacts", func(c echo.Context) error {
 		term := c.QueryParam("q")
+		page := 1
+		hasPrev := func() bool {
+			return page > 1
+		}()
+		hasNext := true
 
 		title := func() string {
 			if term != "" {
@@ -80,12 +85,17 @@ func main() {
 		}()
 
 		data := map[string]interface{}{
-			"Title":    title,
-			"Term":     term,
-			"Message":  message,
-			"Reset":    reset,
-			"Contacts": contacts,
-			"Counter":  counter.PaddedCount(),
+			"Title":         title,
+			"Term":          term,
+			"Message":       message,
+			"Reset":         reset,
+			"Contacts":      contacts,
+			"Counter":       counter.PaddedCount(),
+			"HasNextPage":   hasNext,
+			"HasPrevPage":   hasPrev,
+			"NextPage":      page + 1,
+			"PrevPage":      page - 1,
+			"ContactsCount": contact.ContactsCount(),
 		}
 		return c.Render(http.StatusOK, "index", data)
 	})
