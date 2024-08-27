@@ -227,3 +227,15 @@ func NextPage(page int, items int) bool {
 func PrevPage(page int) bool {
 	return page > 1
 }
+
+func TotalPages(items int) int {
+	total := len(DB) / items
+	if len(DB)%items > 0 {
+		total += len(DB) % items
+	}
+	return total
+}
+
+func LastPage(page int, items int) bool {
+	return page == TotalPages(items)
+}
