@@ -50,11 +50,19 @@ func main() {
 
 	e.GET("/contacts", func(c echo.Context) error {
 		term := c.QueryParam("q")
-		page := 1
-		hasPrev := func() bool {
-			return page > 1
+		page := func() int {
+			if c.QueryParam("page") == "" {
+				return 1
+			}
+			p, err := strconv.Atoi(c.QueryParam("page"))
+			if err != nil {
+				panic(err)
+			}
+			return p
 		}()
-		hasNext := true
+		items := 10
+		hasPrev := contact.PrevPage(page)
+		hasNext := contact.NextPage(page, items)
 
 		title := func() string {
 			if term != "" {
@@ -67,7 +75,7 @@ func main() {
 			if term != "" {
 				return contact.Search(term)
 			}
-			return *contact.Ptr()
+			return contact.PaginatedContacts(page, items)
 		}()
 
 		message := func() string {
