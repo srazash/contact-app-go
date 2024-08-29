@@ -60,8 +60,7 @@ func main() {
 			}
 			return p
 		}()
-		items := 10
-		hasPrev := contact.PrevPage(page)
+		items := 5
 		hasNext := contact.NextPage(page, items)
 
 		title := func() string {
@@ -100,9 +99,7 @@ func main() {
 			"Contacts":      contacts,
 			"Counter":       counter.PaddedCount(),
 			"HasNextPage":   hasNext,
-			"HasPrevPage":   hasPrev,
 			"NextPage":      page + 1,
-			"PrevPage":      page - 1,
 			"ContactsCount": contact.ContactsCount(),
 		}
 		return c.Render(http.StatusOK, "index", data)

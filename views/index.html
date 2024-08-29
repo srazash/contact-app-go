@@ -35,22 +35,20 @@
             </td>
         </tr>
         {{ end }}
+        {{ if .HasNextPage }}
+        <tr>
+            <td colspan="5" style="text-align: center;">
+                <button hx-target="closest tr"
+                    hx-swap="outerHTML"
+                    hx-select="tbody > tr"
+                    hx-get="/contacts?page={{ .NextPage }}">
+                Load More
+                </button>
+            </td>
+        </tr>
+        {{ end }}
     </tbody>
 </table>
-
-<div>
-    {{ if .HasPrevPage }}
-    <a href="/contacts?page={{ .PrevPage }}">Previous Page</a>
-    {{ else }}
-    Previous Page
-    {{ end }}
-    ::
-    {{ if .HasNextPage }}
-    <a href="/contacts?page={{ .NextPage }}">Next Page</a>
-    {{ else }}
-    Next Page
-    {{ end }}
-</div>
 
 <div>
     <a href="/contacts/new">Add Contact</a>
