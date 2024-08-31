@@ -4,7 +4,11 @@
         <legend>Contact Search</legend>
         <p>
             <label for="search">Search Term</label>
-            <input id="search" type="search" name="q" value="{{ .Term }}" />
+            <input id="search" type="search" name="q" value="{{ .Term }}"
+                hx-get="/contacts"
+                hx-trigger="search, keyup delay:400ms changed"
+                hx-target="tbody"
+                hx-select="tbody tr" />
             <input type="submit" value="Search" />
             <span class="message">{{ .Message }}</span>
             <a href="/contacts">{{ .Reset }}</a>
@@ -38,13 +42,12 @@
         {{ if .HasNextPage }}
         <tr>
             <td colspan="5" style="text-align: center;">
-                <span hx-target="closest tr"
-                    hx-trigger="revealed"
+                <button hx-target="closest tr"
                     hx-swap="outerHTML"
                     hx-select="tbody > tr"
                     hx-get="/contacts?page={{ .NextPage }}">
-                    Loading more...
-                </span>
+                    Load more...
+            </button>
             </td>
         </tr>
         {{ end }}
