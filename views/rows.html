@@ -1,0 +1,26 @@
+{{ define "rows" }}
+    {{ range .Contacts }}
+    <tr>
+        <td>{{ .First }}</td>
+        <td>{{ .Last }}</td>
+        <td><a href="tel:{{ .Phone }}">{{ .Phone }}</a></td>
+        <td><a href="mailto:{{ .Email }}">{{ .Email }}</a></td>
+        <td>
+            <a href="/contacts/{{ .Id }}">View</a>
+            <a href="/contacts/{{ .Id }}/edit">Edit</a>
+        </td>
+    </tr>
+    {{ end }}
+    {{ if .HasNextPage }}
+    <tr>
+        <td colspan="5" style="text-align: center;">
+            <button hx-target="closest tr"
+                hx-swap="outerHTML"
+                hx-select="tbody > tr"
+                hx-get="/contacts?page={{ .NextPage }}">
+                Load more...
+        </button>
+        </td>
+    </tr>
+    {{ end }}
+{{ end }}

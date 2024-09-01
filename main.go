@@ -34,7 +34,8 @@ func main() {
 	e.Static("/", "static")
 
 	templates := make(map[string]*template.Template)
-	templates["index"] = template.Must(template.ParseFiles("views/layout.html", "views/index.html"))
+	templates["rows"] = template.Must(template.ParseFiles("views/rows.html"))
+	templates["index"] = template.Must(template.ParseFiles("views/layout.html", "views/index.html", "views/rows.html"))
 	templates["new"] = template.Must(template.ParseFiles("views/layout.html", "views/new.html"))
 	templates["view"] = template.Must(template.ParseFiles("views/layout.html", "views/view.html"))
 	templates["edit"] = template.Must(template.ParseFiles("views/layout.html", "views/edit.html"))
@@ -63,18 +64,26 @@ func main() {
 		items := 5
 		hasNext := contact.NextPage(page, items)
 
-		title := func() string {
-			if term != "" {
-				return fmt.Sprintf("search results for \"%s\"", term)
-			}
-			return "all contacts"
-		}()
-
 		contacts := func() []contact.Contact {
 			if term != "" {
 				return contact.Search(term)
 			}
 			return contact.PaginatedContacts(page, items)
+		}()
+
+		if c.Request().Header.Get("HX-Trigger") == "search" {
+			data := map[string]interface{}{
+				"Contacts":    contacts,
+				"HasNextPage": hasNext,
+			}
+			return c.Render(http.StatusOK, "rows", data)
+		}
+
+		title := func() string {
+			if term != "" {
+				return fmt.Sprintf("search results for \"%s\"", term)
+			}
+			return "all contacts"
 		}()
 
 		message := func() string {
@@ -102,6 +111,7 @@ func main() {
 			"NextPage":      page + 1,
 			"ContactsCount": contact.ContactsCount(),
 		}
+
 		return c.Render(http.StatusOK, "index", data)
 	})
 
