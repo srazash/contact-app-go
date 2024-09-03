@@ -7,8 +7,7 @@
             <input id="search" type="search" name="q" value="{{ .Term }}"
                 hx-get="/contacts"
                 hx-trigger="search, keyup delay:400ms changed"
-                hx-target="tbody"
-                hx-select="tbody tr" />
+                hx-target="tbody" />
             <input type="submit" value="Search" />
             <span class="message">{{ .Message }}</span>
             <a href="/contacts">{{ .Reset }}</a>

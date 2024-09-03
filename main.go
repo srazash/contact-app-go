@@ -104,7 +104,6 @@ func main() {
 			"HasNextPage":   hasNext,
 			"NextPage":      page + 1,
 			"ContactsCount": contact.ContactsCount(),
-			"Template":      "index",
 		}
 
 		return c.Render(http.StatusOK, "layout", data)
