@@ -1,3 +1,7 @@
+{{ define "view" }}
+    {{ template "layout.html" . }}
+{{ end }}
+
 {{ define "content" }}
 <div class="card">
     <h3>{{ .Contact.First }} {{ .Contact.Last }}</h3>

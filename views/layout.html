@@ -1,4 +1,3 @@
-{{ block "layout" . }}
 <!doctype html>
 <html lang="en">
     <head>
@@ -14,7 +13,7 @@
             <h2>a digital rolodex on <i>your</i> personal computer!</h2>
         </div>
         <hr />
-        {{ template "index" . }}
+        {{ template "content" . }}
         <hr />
         <div class="centre">
             <div>
@@ -31,4 +30,3 @@
         </div>
     </body>
 </html>
-{{ end }}

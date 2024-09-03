@@ -1,4 +1,8 @@
-{{ block "new" . }}
+{{ define "new" }}
+    {{ template "layout.html" . }}
+{{ end }}
+
+{{ define "content" }}
 <form action="/contacts/new" method="post">
     <fieldset>
         <legend>Contact Values</legend>

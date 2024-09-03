@@ -1,4 +1,8 @@
-{{ block "index" . }}
+{{ define "index" }}
+    {{ template "layout.html" . }}
+{{ end }}
+
+{{ define "content" }}
 <form action="/contacts" method="get">
     <fieldset>
         <legend>Contact Search</legend>

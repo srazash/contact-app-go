@@ -1,4 +1,8 @@
-{{ block "edit" . }}
+{{ define "edit" }}
+    {{ template "layout.html" . }}
+{{ end }}
+
+{{ define "content" }}
 <form action="/contacts/{{ .Contact.Id }}/edit" method="post">
     <fieldset>
         <legend>Contact Values</legend>

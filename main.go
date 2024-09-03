@@ -33,17 +33,18 @@ func main() {
 	}))
 	e.Static("/", "static")
 
-	t := &Template{
-		templates: template.Must(template.ParseGlob("views/*.html")),
-	}
-	e.Renderer = t
-
 	e.GET("/", func(c echo.Context) error {
 		counter.Increment()
 		return c.Redirect(http.StatusFound, "/contacts")
 	})
 
 	e.GET("/contacts", func(c echo.Context) error {
+		t := &Template{
+			templates: template.Must(template.ParseFiles("views/layout.html",
+				"views/index.html", "views/rows.html")),
+		}
+		e.Renderer = t
+
 		term := c.QueryParam("q")
 		page := func() int {
 			if c.QueryParam("page") == "" {
@@ -106,10 +107,16 @@ func main() {
 			"ContactsCount": contact.ContactsCount(),
 		}
 
-		return c.Render(http.StatusOK, "layout", data)
+		return c.Render(http.StatusOK, "index", data)
 	})
 
 	e.GET("/contacts/new", func(c echo.Context) error {
+		t := &Template{
+			templates: template.Must(template.ParseFiles("views/layout.html",
+				"views/new.html")),
+		}
+		e.Renderer = t
+
 		data := map[string]interface{}{
 			"Title":   "new contact",
 			"Values":  make(map[string]string),
@@ -120,6 +127,12 @@ func main() {
 	})
 
 	e.POST("/contacts/new", func(c echo.Context) error {
+		t := &Template{
+			templates: template.Must(template.ParseFiles("views/layout.html",
+				"views/new.html")),
+		}
+		e.Renderer = t
+
 		values := make(map[string]string)
 
 		values["First"] = c.FormValue("first")
@@ -151,6 +164,12 @@ func main() {
 	})
 
 	e.GET("/contacts/:contact_id", func(c echo.Context) error {
+		t := &Template{
+			templates: template.Must(template.ParseFiles("views/layout.html",
+				"views/view.html")),
+		}
+		e.Renderer = t
+
 		contact_id, err := strconv.Atoi(c.Param("contact_id"))
 		if err != nil {
 			return c.Redirect(http.StatusSeeOther, "/contacts")
@@ -168,6 +187,12 @@ func main() {
 	})
 
 	e.GET("/contacts/:contact_id/edit", func(c echo.Context) error {
+		t := &Template{
+			templates: template.Must(template.ParseFiles("views/layout.html",
+				"views/edit.html")),
+		}
+		e.Renderer = t
+
 		contact_id, err := strconv.Atoi(c.Param("contact_id"))
 		if err != nil {
 			return c.Redirect(http.StatusSeeOther, "/contacts")
@@ -185,6 +210,12 @@ func main() {
 	})
 
 	e.POST("/contacts/:contact_id/edit", func(c echo.Context) error {
+		t := &Template{
+			templates: template.Must(template.ParseFiles("views/layout.html",
+				"views/edit.html")),
+		}
+		e.Renderer = t
+
 		contact_id, err := strconv.Atoi(c.Param("contact_id"))
 		if err != nil {
 			return c.Redirect(http.StatusSeeOther, "/contacts")
