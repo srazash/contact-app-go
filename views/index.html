@@ -1,4 +1,4 @@
-{{ define "content" }}
+{{ block "index" . }}
 <form action="/contacts" method="get">
     <fieldset>
         <legend>Contact Search</legend>
@@ -27,8 +27,7 @@
         </tr>
     </thead>
     <tbody>
-        {{ block "rows" . }}
-        {{ end }}
+        {{ . }}
     </tbody>
 </table>
 

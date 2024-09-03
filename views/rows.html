@@ -1,4 +1,4 @@
-{{ define "rows" }}
+{{ block "rows" . }}
     {{ range .Contacts }}
     <tr>
         <td>{{ .First }}</td>

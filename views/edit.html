@@ -1,4 +1,4 @@
-{{ define "content" }}
+{{ block "edit" . }}
 <form action="/contacts/{{ .Contact.Id }}/edit" method="post">
     <fieldset>
         <legend>Contact Values</legend>

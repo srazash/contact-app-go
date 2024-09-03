@@ -13,12 +13,12 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-type TemplateRegistry struct {
-	templates map[string]*template.Template
+type Template struct {
+	templates *template.Template
 }
 
-func (t *TemplateRegistry) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.templates[name].Execute(w, data)
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
 }
 
 func main() {
@@ -33,16 +33,10 @@ func main() {
 	}))
 	e.Static("/", "static")
 
-	templates := make(map[string]*template.Template)
-	templates["rows"] = template.Must(template.ParseFiles("views/rows.html"))
-	templates["index"] = template.Must(template.ParseFiles("views/layout.html", "views/index.html", "views/rows.html"))
-	templates["new"] = template.Must(template.ParseFiles("views/layout.html", "views/new.html"))
-	templates["view"] = template.Must(template.ParseFiles("views/layout.html", "views/view.html"))
-	templates["edit"] = template.Must(template.ParseFiles("views/layout.html", "views/edit.html"))
-
-	e.Renderer = &TemplateRegistry{
-		templates: templates,
+	t := &Template{
+		templates: template.Must(template.ParseGlob("views/*.html")),
 	}
+	e.Renderer = t
 
 	e.GET("/", func(c echo.Context) error {
 		counter.Increment()
@@ -112,7 +106,7 @@ func main() {
 			"ContactsCount": contact.ContactsCount(),
 		}
 
-		return c.Render(http.StatusOK, "index", data)
+		return c.Render(http.StatusOK, "layout", data)
 	})
 
 	e.GET("/contacts/new", func(c echo.Context) error {
