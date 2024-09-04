@@ -68,8 +68,11 @@ func main() {
 
 		if c.Request().Header.Get("HX-Trigger") == "search" {
 			data := map[string]interface{}{
-				"Contacts":    contacts,
-				"HasNextPage": hasNext,
+				"Contacts":      contacts,
+				"HasNextPage":   false,
+				"Term":          term,
+				"Search":        true,
+				"ContactsCount": len(contacts),
 			}
 			return c.Render(http.StatusOK, "rows", data)
 		}
@@ -81,25 +84,10 @@ func main() {
 			return "all contacts"
 		}()
 
-		message := func() string {
-			if term != "" {
-				return fmt.Sprintf("Showing results for search term: \"%s\", %d found", term, len(contacts))
-			}
-			return ""
-		}()
-
-		reset := func() string {
-			if term != "" {
-				return "Reset"
-			}
-			return ""
-		}()
-
 		data := map[string]interface{}{
 			"Title":         title,
 			"Term":          term,
-			"Message":       message,
-			"Reset":         reset,
+			"Search":        false,
 			"Contacts":      contacts,
 			"Counter":       counter.PaddedCount(),
 			"HasNextPage":   hasNext,

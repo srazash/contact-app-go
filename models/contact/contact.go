@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"strings"
+	"time"
 )
 
 const DBFILE string = "contacts.json"
@@ -187,6 +188,8 @@ func Search(term string) []Contact {
 			results = append(results, DB[i])
 		}
 	}
+
+	time.Sleep(time.Millisecond * 1000)
 
 	return results
 }

@@ -11,8 +11,18 @@
         </td>
     </tr>
     {{ end }}
-    {{ if .HasNextPage }}
     <tr>
+        {{ if .Search }}
+        <td colspan="5" style="text-align: center;">
+            <span class="message">Showing results for search term: "{{ .Term }}", {{ .ContactsCount }} results found.</span>
+            <button hx-get="/contacts"
+                hx-target="body"
+                hx-push-url="true">
+                Clear
+            </button>
+        </td>
+        {{ else }}
+        {{ if .HasNextPage }}
         <td colspan="5" style="text-align: center;">
             <button hx-target="closest tr"
                 hx-swap="outerHTML"
@@ -21,6 +31,7 @@
                 Load more...
         </button>
         </td>
+        {{ end }}
+        {{ end }}
     </tr>
-    {{ end }}
 {{ end }}

@@ -6,16 +6,19 @@
 <form action="/contacts" method="get">
     <fieldset>
         <legend>Contact Search</legend>
-        <p>
+        <div>
             <label for="search">Search Term</label>
             <input id="search" type="search" name="q" value="{{ .Term }}"
                 hx-get="/contacts"
                 hx-trigger="search, keyup delay:400ms changed"
-                hx-target="tbody" />
-            <input type="submit" value="Search" />
-            <span class="message">{{ .Message }}</span>
-            <a href="/contacts">{{ .Reset }}</a>
-        </p>
+                hx-target="tbody"
+                hx-push-url="true"
+                hx-indicator="#searching"/>
+            <img id="searching" class="htmx-indicator"
+                src="/image/search.gif"
+                alt="Sniffing it out..."/>
+        </div>
+        <input type="submit" value="Search" />
     </fieldset>
 </form>
 
