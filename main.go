@@ -262,7 +262,12 @@ func main() {
 		}
 
 		contact.Delete(contact_id)
-		return c.Redirect(http.StatusSeeOther, "/contacts")
+
+		if c.Request().Header.Get("HX-Trigger") == "delete-button" {
+			return c.Redirect(http.StatusSeeOther, "/contacts")
+		}
+
+		return c.String(http.StatusOK, "")
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))
