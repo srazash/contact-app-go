@@ -68,11 +68,10 @@ func main() {
 
 		if c.Request().Header.Get("HX-Trigger") == "search" {
 			data := map[string]interface{}{
-				"Contacts":      contacts,
-				"HasNextPage":   false,
-				"Term":          term,
-				"Search":        true,
-				"ContactsCount": len(contacts),
+				"Contacts":    contacts,
+				"HasNextPage": false,
+				"Term":        term,
+				"Search":      true,
 			}
 			return c.Render(http.StatusOK, "rows", data)
 		}
@@ -85,17 +84,27 @@ func main() {
 		}()
 
 		data := map[string]interface{}{
-			"Title":         title,
-			"Term":          term,
-			"Search":        false,
-			"Contacts":      contacts,
-			"Counter":       counter.PaddedCount(),
-			"HasNextPage":   hasNext,
-			"NextPage":      page + 1,
-			"ContactsCount": contact.ContactsCount(),
+			"Title":       title,
+			"Term":        term,
+			"Search":      false,
+			"Contacts":    contacts,
+			"Counter":     counter.PaddedCount(),
+			"HasNextPage": hasNext,
+			"NextPage":    page + 1,
 		}
 
 		return c.Render(http.StatusOK, "index", data)
+	})
+
+	e.GET("/contacts/count", func(c echo.Context) error {
+		cc := contact.ContactsCount()
+		s := func() string {
+			if cc == 1 {
+				return fmt.Sprintf(`(%d total contact)`, cc)
+			}
+			return fmt.Sprintf(`(%d total contacts)`, cc)
+		}()
+		return c.String(http.StatusOK, s)
 	})
 
 	e.GET("/contacts/new", func(c echo.Context) error {

@@ -38,6 +38,16 @@
 </table>
 
 <div>
-    <a href="/contacts/new">Add Contact</a>
+    <button hx-get="/contacts/new"
+        hx-target="body"
+        hx-push-url="true">
+        Add Contact
+    </button>
+    <span class="message"
+        hx-get="/contacts/count"
+        hx-trigger="revealed">
+        <img id="spinner" class="htmx-indicator"
+            src="/image/search.gif" />
+    </span>
 </div>
 {{ end }}
