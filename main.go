@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -253,6 +254,60 @@ func main() {
 		contact.Update(contact_id, values["First"], values["Last"], values["Email"], values["Phone"])
 		path := fmt.Sprintf("/contacts/%d", contact_id)
 		return c.Redirect(http.StatusFound, path)
+	})
+
+	e.DELETE("/contacts", func(c echo.Context) error {
+		contact_ids := []int{}
+
+		c.FormParams()
+		for _, idstr := range c.Request().Form["selected_contact_ids"] {
+			log.Println(idstr)
+			id, err := strconv.Atoi(idstr)
+			if err != nil {
+				continue
+			}
+			contact_ids = append(contact_ids, id)
+		}
+
+		contact.MultiDelete(contact_ids)
+
+		t := &Template{
+			templates: template.Must(template.ParseFiles("views/layout.html",
+				"views/index.html", "views/rows.html")),
+		}
+		e.Renderer = t
+
+		term := c.QueryParam("q")
+		page := func() int {
+			if c.QueryParam("page") == "" {
+				return 1
+			}
+			p, err := strconv.Atoi(c.QueryParam("page"))
+			if err != nil {
+				panic(err)
+			}
+			return p
+		}()
+		items := 5
+		hasNext := contact.NextPage(page, items)
+
+		contacts := func() []contact.Contact {
+			if term != "" {
+				return contact.Search(term)
+			}
+			return contact.PaginatedContacts(page, items)
+		}()
+
+		data := map[string]interface{}{
+			"Term":        term,
+			"Search":      term != "",
+			"Contacts":    contacts,
+			"Counter":     counter.PaddedCount(),
+			"HasNextPage": hasNext,
+			"NextPage":    page + 1,
+		}
+
+		return c.Render(http.StatusOK, "index", data)
 	})
 
 	e.DELETE("/contacts/:contact_id", func(c echo.Context) error {

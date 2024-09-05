@@ -1,6 +1,9 @@
 {{ define "rows" }}
     {{ range .Contacts }}
     <tr>
+        <td>
+            <input type="checkbox" name="selected_contact_ids" value="{{ .Id }}">
+        </td>
         <td>{{ .First }}</td>
         <td>{{ .Last }}</td>
         <td><a href="tel:{{ .Phone }}">{{ .Phone }}</a></td>
@@ -26,7 +29,7 @@
             </button>
         </td>
         {{ else }}
-        <td colspan="5" style="text-align: center;">
+        <td colspan="6" style="text-align: center;">
             {{ if .HasNextPage }}
             <button hx-target="closest tr"
                 hx-swap="outerHTML"

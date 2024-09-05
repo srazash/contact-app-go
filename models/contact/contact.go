@@ -159,6 +159,24 @@ func Delete(id int) {
 	Save()
 }
 
+func MultiDelete(ids []int) {
+
+	del := []int{}
+	for i := len(ids) - 1; i >= 0; i-- {
+		del = append(del, ids[i])
+	}
+
+	for _, id := range del {
+		idx := id - 1
+
+		copy(DB[idx:], DB[idx+1:])
+		DB = DB[:len(DB)-1]
+	}
+
+	updateIds()
+	Save()
+}
+
 func updateIds() {
 	nextId = 1
 	for i := range DB {
