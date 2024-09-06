@@ -36,10 +36,16 @@ h3 {
     width: fit-content;
     background-color: #000000;
     color: #2cff00;
-    font-family: "Courier New", Courier, monospace;
+    font-family: "Comic Sans", Courier, monospace;
     font-size: x-large;
     font-weight: bold;
     border: 2px solid #fb0702;
+}
+
+.cs {
+    font-family: "Comic Sans", Courier, monospace;
+    font-size: x-large;
+    font-weight: bold;
 }
 
 .card {
