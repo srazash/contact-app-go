@@ -1,25 +1,31 @@
 package archiver
 
-func status() string {
-	return ""
+type Archiver struct {
+	Status   string
+	Prograss float64
+	Archive  string
 }
 
-func progress() float64 {
-	return 0.0
+func (a *Archiver) GetStatus() string {
+	return a.Status
 }
 
-func run() {
+func (a *Archiver) GetProgress() float64 {
+	return a.Prograss
+}
+
+func (a *Archiver) Run() {
 
 }
 
-func reset() {
+func (a *Archiver) Reset() {
 
 }
 
-func archive_file() string {
-	return ""
+func (a *Archiver) ArchiveFile() string {
+	return a.Archive
 }
 
-func get() {
+func (a *Archiver) Get() {
 
 }
