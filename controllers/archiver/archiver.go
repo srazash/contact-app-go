@@ -15,7 +15,7 @@ const (
 type Archiver struct {
 	Status   int
 	Progress float64
-	Archive  string
+	Archive  []byte
 }
 
 func (a *Archiver) GetStatus() int {
@@ -43,7 +43,7 @@ func (a *Archiver) runner() {
 		}
 
 		a.Progress = 0.67
-		a.Archive = string(data)
+		a.Archive = data
 
 		a.Progress = 1.0
 		a.Status = Complete
@@ -54,14 +54,14 @@ func (a *Archiver) Reset() {
 	a.Status = Waiting
 }
 
-func (a *Archiver) ArchiveFile() string {
+func (a *Archiver) ArchiveFile() []byte {
 	return a.Archive
 }
 
-func Get() Archiver {
+func New() Archiver {
 	return Archiver{
 		Status:   Waiting,
 		Progress: 0.0,
-		Archive:  "",
+		Archive:  []byte{},
 	}
 }
