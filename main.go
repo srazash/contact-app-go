@@ -1,6 +1,7 @@
 package main
 
 import (
+	"contactapp/controllers/archiver"
 	"contactapp/controllers/counter"
 	"contactapp/models/contact"
 	"fmt"
@@ -323,6 +324,18 @@ func main() {
 		}
 
 		return c.String(http.StatusOK, "")
+	})
+
+	e.POST("/contacts/archive", func(c echo.Context) error {
+		archive := archiver.Get()
+		archive.Run()
+
+		t := &Template{
+			templates: template.Must(template.ParseFiles("views/archive.html")),
+		}
+		e.Renderer = t
+
+		return c.Render(http.StatusOK, "archive-running", archive)
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))

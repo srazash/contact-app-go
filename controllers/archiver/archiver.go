@@ -3,6 +3,7 @@ package archiver
 import (
 	"contactapp/models/contact"
 	"encoding/json"
+	"time"
 )
 
 const (
@@ -35,6 +36,8 @@ func (a *Archiver) runner() {
 		a.Status = Running
 		a.Progress = 0.33
 
+		time.Sleep(3 * time.Second)
+
 		data, err := json.Marshal(contact.DB)
 		if err != nil {
 			a.Status = Errored
@@ -42,8 +45,12 @@ func (a *Archiver) runner() {
 			return
 		}
 
+		time.Sleep(3 * time.Second)
+
 		a.Progress = 0.67
 		a.Archive = data
+
+		time.Sleep(3 * time.Second)
 
 		a.Progress = 1.0
 		a.Status = Complete
@@ -58,7 +65,7 @@ func (a *Archiver) ArchiveFile() []byte {
 	return a.Archive
 }
 
-func New() Archiver {
+func Get() Archiver {
 	return Archiver{
 		Status:   Waiting,
 		Progress: 0.0,

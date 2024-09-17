@@ -3,6 +3,14 @@
 {{ end }}
 
 {{ define "content" }}
+<div id="archive-ui"
+    hx-target="this"
+    hx-swap="outerHTML">
+    <button hx-post="/contacts/archive">
+        Download Contact Archive
+    </button>
+</div>
+
 <form action="/contacts" method="get">
     <fieldset>
         <legend>Contact Search</legend>
