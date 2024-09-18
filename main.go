@@ -93,6 +93,7 @@ func main() {
 			"Counter":     counter.PaddedCount(),
 			"HasNextPage": hasNext,
 			"NextPage":    page + 1,
+			"Archive":     archiver.Get(),
 		}
 
 		return c.Render(http.StatusOK, "index", data)
@@ -327,15 +328,7 @@ func main() {
 	})
 
 	e.POST("/contacts/archive", func(c echo.Context) error {
-		archive := archiver.Get()
-		archive.Run()
-
-		t := &Template{
-			templates: template.Must(template.ParseFiles("views/archive.html")),
-		}
-		e.Renderer = t
-
-		return c.Render(http.StatusOK, "archive-running", archive)
+		return c.Render(http.StatusOK, "archive-running", nil)
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))

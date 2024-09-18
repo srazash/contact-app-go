@@ -3,13 +3,7 @@
 {{ end }}
 
 {{ define "content" }}
-<div id="archive-ui"
-    hx-target="this"
-    hx-swap="outerHTML">
-    <button hx-post="/contacts/archive">
-        Download Contact Archive
-    </button>
-</div>
+{{ template "archive" . }}
 
 <form action="/contacts" method="get">
     <fieldset>
@@ -65,5 +59,33 @@
         <img id="spinner" class="htmx-indicator"
             src="/image/search.gif" />
     </span>
+</div>
+{{ end }}
+
+{{ define "archive" }}
+<div id="archive-ui"
+    hx-target="this"
+    hx-swap="outerHTML">
+    <button hx-post="/contacts/archive">
+        Download Contact Archive
+    </button>
+</div>
+{{ end }}
+
+{{ define "archive-running" }}
+<div id="archive-ui"
+    hx-target="this"
+    hx-swap="outerHTML">
+    Running . . . {{ .Archive.Progress }}%
+</div>
+{{ end }}
+
+{{ define "archive-complete" }}
+<div id="archive-ui"
+    hx-target="this"
+    hx-swap="outerHTML">
+    <button hx-post="/contacts/archive">
+        Download Contact Archive
+    </button>
 </div>
 {{ end }}
