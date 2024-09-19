@@ -27,6 +27,8 @@ func main() {
 	contact.Load()
 	counter.Load()
 
+	a := archiver.Get()
+
 	e := echo.New()
 
 	e.Use(middleware.Logger())
@@ -93,7 +95,7 @@ func main() {
 			"Counter":     counter.PaddedCount(),
 			"HasNextPage": hasNext,
 			"NextPage":    page + 1,
-			"Archive":     archiver.Get(),
+			"Archive":     a,
 		}
 
 		return c.Render(http.StatusOK, "index", data)
@@ -327,8 +329,20 @@ func main() {
 		return c.String(http.StatusOK, "")
 	})
 
+	e.GET("/contacts/archive", func(c echo.Context) error {
+		if a.Status == archiver.Running {
+			return c.Render(http.StatusOK, "archive-running", a)
+		}
+		return c.Render(http.StatusOK, "archive-complete", nil)
+	})
+
 	e.POST("/contacts/archive", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "archive-running", nil)
+		a.Run()
+		return c.Render(http.StatusOK, "archive-running", a)
+	})
+
+	e.GET("/contacts/archive/file", func(c echo.Context) error {
+		return c.JSONBlob(http.StatusOK, a.ArchiveFile())
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))

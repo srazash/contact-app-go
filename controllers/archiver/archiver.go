@@ -15,7 +15,7 @@ const (
 
 type Archiver struct {
 	Status   int
-	Progress float64
+	Progress int
 	Archive  []byte
 }
 
@@ -23,7 +23,7 @@ func (a *Archiver) GetStatus() int {
 	return a.Status
 }
 
-func (a *Archiver) GetProgress() float64 {
+func (a *Archiver) GetProgress() int {
 	return a.Progress
 }
 
@@ -34,25 +34,25 @@ func (a *Archiver) Run() {
 func (a *Archiver) runner() {
 	if a.Status == Waiting {
 		a.Status = Running
-		a.Progress = 0.33
+		a.Progress = 33
 
-		time.Sleep(3 * time.Second)
+		time.Sleep(1 * time.Second)
 
 		data, err := json.Marshal(contact.DB)
 		if err != nil {
 			a.Status = Errored
-			a.Progress = 0.0
+			a.Progress = 0
 			return
 		}
 
-		time.Sleep(3 * time.Second)
+		time.Sleep(1 * time.Second)
 
-		a.Progress = 0.67
+		a.Progress = 67
 		a.Archive = data
 
-		time.Sleep(3 * time.Second)
+		time.Sleep(1 * time.Second)
 
-		a.Progress = 1.0
+		a.Progress = 100
 		a.Status = Complete
 	}
 }
