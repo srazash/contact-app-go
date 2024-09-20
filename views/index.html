@@ -79,7 +79,7 @@
     <div hx-get="/contacts/archive" hx-trigger="load delay:500ms">
         Creating archive...
         <div class="progress">
-            <div class="progress-bar" role="progressbar"
+            <div id="archive-progress" class="progress-bar" role="progressbar"
             aria-valuenow="{{ .Progress }}" style="width:{{ .Progress }}%"></div>
         </div>
     </div>
@@ -90,8 +90,10 @@
 <div id="archive-ui"
     hx-target="this"
     hx-swap="outerHTML">
-    <a hx-boost="false" href="/contacts/archive/file">
+    <a hx-boost="false" href="/contacts/archive/file"
+        _="on load click() me">
         Archive Ready! Download File!
     </a>
+    <button hx-delete="/contacts/archive">Reset Archive</button>
 </div>
 {{ end }}

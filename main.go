@@ -345,5 +345,10 @@ func main() {
 		return c.JSONBlob(http.StatusOK, a.ArchiveFile())
 	})
 
+	e.DELETE("/contacts/archive", func(c echo.Context) error {
+		a.Reset()
+		return c.Render(http.StatusSeeOther, "archive", nil)
+	})
+
 	e.Logger.Fatal(e.Start(":3000"))
 }
