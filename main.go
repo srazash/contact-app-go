@@ -350,5 +350,19 @@ func main() {
 		return c.Render(http.StatusSeeOther, "archive", nil)
 	})
 
+	// Scripting Examples
+
+	e.GET("/counter/js", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "js-counter", nil)
+	})
+
+	e.GET("/counter/alpine", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "alpine-counter", nil)
+	})
+
+	e.GET("/counter/hs", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "hs-counter", nil)
+	})
+
 	e.Logger.Fatal(e.Start(":3000"))
 }
