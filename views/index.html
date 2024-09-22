@@ -109,20 +109,27 @@
 {{ end }}
 
 {{ define "js-counter" }}
-<div>
-    <h3>Vanilla JavaScript Counter</h3>
-    <div id="output">0</div>
-    <button
-        onclick="document.querySelector('#output').textContent++">
-        Increment
-    </button>
-</div>
+<h3>Vanilla JavaScript Counter</h3>
+<section data-counter>
+    <output data-counter-output>0</output>
+    <button data-counter-increment>Increment</button>
+</section>
+<script>
+    document.querySelectorAll("[data-counter]")
+        .forEach(el => {
+            const
+                output = el.querySelector("[data-counter-output]"),
+                increment = el.querySelector("[data-counter-increment]");
+
+            increment.addEventListener("click", e => output.textContent++);
+        });
+</script>
 {{ end }}
 
 {{ define "alpine-counter" }}
 <div>
     <h3>Alpine.JS Counter</h3>
-    <div id="output">0</div>
+    <output id="output">0</output>
     <button>
         Increment
     </button>
@@ -132,7 +139,7 @@
 {{ define "hs-counter" }}
 <div>
     <h3>_hyperscript Counter</h3>
-    <div id="output">0</div>
+    <output id="output">0</output>
     <button>
         Increment
     </button>
