@@ -128,19 +128,17 @@
 
 {{ define "alpine-counter" }}
 <h3>Alpine.JS Counter</h3>
-<section>
-    <output id="output">0</output>
-    <button>
-        Increment
-    </button>
+<section x-data="{ count: 0 }">
+    <output x-text="count"></output>
+    <button x-on:click="count++">Increment</button>
 </section>
 {{ end }}
 
 {{ define "hs-counter" }}
 <h3>_hyperscript Counter</h3>
 <section>
-    <output id="output">0</output>
-    <button>
+    <output>0</output>
+    <button _="on click increment the textContent of the previous <output/>">
         Increment
     </button>
 </section>
