@@ -15,7 +15,8 @@
                 hx-trigger="search, keyup delay:400ms changed"
                 hx-target="tbody"
                 hx-push-url="true"
-                hx-indicator="#searching"/>
+                hx-indicator="#searching"
+                _="on keydown[altKey and code is 'KeyS'] from the window focus() me"/>
             <img id="searching" class="htmx-indicator"
                 src="/image/search.gif"
                 alt="Sniffing it out..."/>
