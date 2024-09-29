@@ -12,7 +12,7 @@
             <div data-overflow-menu>
                 <button type="button" aria-haspopup="menu"
                     aria-controls="contact-menu-{{ .Id }}"
-                    _="on click toggle .visible on next div">
+                    _="on click toggle @hidden on #contact-menu-{{ .Id }}">
                     Options
                 </button>
                 <div role="menu" hidden id="contact-menu-{{ .Id }}">
