@@ -9,22 +9,22 @@
         <td><a href="tel:{{ .Phone }}">{{ .Phone }}</a></td>
         <td><a href="mailto:{{ .Email }}">{{ .Email }}</a></td>
         <td>
-            <div data-overflow-menu>
-                <button type="button" aria-haspopup="menu"
-                    aria-controls="contact-menu-{{ .Id }}"
+            <div>
+                <button type="button"
                     _="on click toggle @hidden on #contact-menu-{{ .Id }}">
                     Options
                 </button>
-                <div role="menu" hidden id="contact-menu-{{ .Id }}">
-                    <a role="menuitem" href="/contacts/{{ .Id }}/edit">Edit</a>
-                    <a role="menuitem" href="/contacts/{{ .Id }}">View</a>
-                    <a role="menuitem" href="#" hx-delete="/contacts/{{ .Id }}"
+                <span hidden id="contact-menu-{{ .Id }}"
+                    _="on mouseout wait 60s then toggle @hidden on me">
+                    <a href="/contacts/{{ .Id }}/edit">Edit</a>
+                    <a href="/contacts/{{ .Id }}">View</a>
+                    <a href="#" hx-delete="/contacts/{{ .Id }}"
                         hx-swap="outerHTML swap:1s"
                         hx-confirm="Are you sure you want to delete this contact?"
                         hx-target="closest tr">
                         Delete
                     </a>
-                </div>
+                </span>
             </div>
         </td>
     </tr>
