@@ -25,7 +25,17 @@
     </fieldset>
 </form>
 
-<form>
+<form x-data="{ selected: [] }">
+    <template x-if="selected.length > 0">
+        <div class="box info tool-bar">
+          <slot x-text="selected.length"></slot>
+          contacts selected
+      
+          <button type="button" class="bad bg color border">Delete</button>
+          <hr aria-orientation="vertical">
+          <button type="button">Cancel</button>
+        </div>
+      </template>
     <table>
         <thead>
             <tr>
