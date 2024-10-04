@@ -2,7 +2,8 @@
     {{ range .Contacts }}
     <tr>
         <td>
-            <input type="checkbox" name="selected_contact_ids" value="{{ .Id }}">
+            <input type="checkbox" name="selected_contact_ids"
+                value="{{ .Id }}" x-model="selected">
         </td>
         <td>{{ .First }}</td>
         <td>{{ .Last }}</td>
