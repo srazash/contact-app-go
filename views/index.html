@@ -30,10 +30,14 @@
         <div>
             <slot x-text="selected.length"></slot>
             contacts selected
-            <button type="button" @click="
-                    confirm(`Delete ${selected.length} contacts?`) &&
-                    htmx.ajax('DELETE', '/contacts',
-                    { source: $root, target: document.body })">
+            <button type="button" @click="Swal.fire({
+                title: 'Delete these contacts?',
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+            }).then((result) => {
+                if (result.isConfirmed) htmx.ajax('DELETE', '/contacts',
+                    { source: $root, target: document.body })
+            });">
                 Delete
             </button>
             <button type="button" @click="selected = []">Cancel</button>
