@@ -25,21 +25,30 @@
     </fieldset>
 </form>
 
+<script>
+    function sweetConfirm(elt, config) {
+        Swal.fire(config)
+            .then((result) => {
+            if (result.isConfirmed) {
+                elt.dispatchEvent(new Event('confirmed'));
+            }
+        });
+    }
+</script>
 <form x-data="{ selected: [] }">
     <template x-if="selected.length > 0">
         <div>
             <slot x-text="selected.length"></slot>
             contacts selected
-            <button type="button" @click="Swal.fire({
-                title: 'Delete these contacts?',
-                showCancelButton: true,
-                confirmButtonText: 'Delete',
-            }).then((result) => {
-                if (result.isConfirmed) htmx.ajax('DELETE', '/contacts',
-                    { source: $root, target: document.body })
-            });">
-                Delete
-            </button>
+            <button type="button"
+                hx-delete="/contacts"
+                hx-target="body"
+                hx-trigger="confirmed"
+                @click="sweetConfirm($el, {
+                    title: 'Delete these contacts?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Delete'
+                })">Delete</button>
             <button type="button" @click="selected = []">Cancel</button>
         </div>
       </template>
