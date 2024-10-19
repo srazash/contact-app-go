@@ -260,3 +260,11 @@ func TotalPages(items int) int {
 func LastPage(page int, items int) bool {
 	return page == TotalPages(items)
 }
+
+func JsonAllContacts() []byte {
+	jsonData, err := json.Marshal(DB)
+	if err != nil {
+		panic(err)
+	}
+	return jsonData
+}

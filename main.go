@@ -364,5 +364,10 @@ func main() {
 		return c.Render(http.StatusOK, "hs-counter", nil)
 	})
 
+	// JSON Data APIs
+	e.GET("/api/v1/contacts", func(c echo.Context) error {
+		return c.JSONBlob(http.StatusOK, contact.JsonAllContacts())
+	})
+
 	e.Logger.Fatal(e.Start(":3000"))
 }
