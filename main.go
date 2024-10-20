@@ -369,5 +369,24 @@ func main() {
 		return c.JSONBlob(http.StatusOK, contact.JsonAllContacts())
 	})
 
+	e.POST("/api/v1/contacts", func(c echo.Context) error {
+		values := make(map[string]string)
+
+		values["First"] = c.FormValue("first")
+		values["Last"] = c.FormValue("last")
+		values["Email"] = c.FormValue("email")
+		values["Phone"] = c.FormValue("phone")
+
+		errors := contact.ValidateForm(&values)
+
+		if len(errors) != 0 {
+			return c.NoContent(http.StatusBadRequest)
+		}
+
+		_ = contact.Create(values["First"], values["Last"], values["Email"], values["Phone"])
+
+		return c.NoContent(http.StatusOK)
+	})
+
 	e.Logger.Fatal(e.Start(":3000"))
 }
