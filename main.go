@@ -388,5 +388,19 @@ func main() {
 		return c.NoContent(http.StatusOK)
 	})
 
+	e.GET("/api/v1/contacts/:contact_id", func(c echo.Context) error {
+		contact_id, err := strconv.Atoi(c.Param("contact_id"))
+		if err != nil {
+			return c.NoContent(http.StatusBadRequest)
+		}
+
+		con, err := contact.JsonContactById(contact_id)
+		if err != nil {
+			return c.NoContent(http.StatusBadRequest)
+		}
+
+		return c.JSONBlob(http.StatusOK, con)
+	})
+
 	e.Logger.Fatal(e.Start(":3000"))
 }

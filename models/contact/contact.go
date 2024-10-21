@@ -268,3 +268,16 @@ func JsonAllContacts() []byte {
 	}
 	return jsonData
 }
+
+func JsonContactById(contact_id int) ([]byte, error) {
+	contact, err := Find(contact_id)
+	if err != nil {
+		return nil, err
+	}
+
+	jsonData, err := json.Marshal(contact)
+	if err != nil {
+		return nil, err
+	}
+	return jsonData, nil
+}
