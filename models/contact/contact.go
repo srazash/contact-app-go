@@ -123,6 +123,10 @@ func ValidateEmail(email string) string {
 	return ""
 }
 
+func ValidateContactId(contact_id int) bool {
+	return contact_id > 0 && contact_id <= len(DB)+1
+}
+
 func Update(id int, first, last, email, phone string) {
 	c := &DB[id-1]
 	ops := 0

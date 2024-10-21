@@ -393,6 +393,9 @@ func main() {
 		if err != nil {
 			return c.NoContent(http.StatusBadRequest)
 		}
+		if !contact.ValidateContactId(contact_id) {
+			return c.NoContent(http.StatusBadRequest)
+		}
 
 		con, err := contact.JsonContactById(contact_id)
 		if err != nil {
@@ -400,6 +403,47 @@ func main() {
 		}
 
 		return c.JSONBlob(http.StatusOK, con)
+	})
+
+	e.PUT("/api/v1/contacts/:contact_id", func(c echo.Context) error {
+		contact_id, err := strconv.Atoi(c.Param("contact_id"))
+		if err != nil {
+			return c.NoContent(http.StatusBadRequest)
+		}
+		if !contact.ValidateContactId(contact_id) {
+			return c.NoContent(http.StatusBadRequest)
+		}
+
+		values := make(map[string]string)
+
+		values["First"] = c.FormValue("first")
+		values["Last"] = c.FormValue("last")
+		values["Email"] = c.FormValue("email")
+		values["Phone"] = c.FormValue("phone")
+
+		errors := contact.ValidateForm(&values)
+
+		if len(errors) != 0 {
+			return c.NoContent(http.StatusBadRequest)
+		}
+
+		contact.Update(contact_id, values["First"], values["Last"], values["Email"], values["Phone"])
+
+		return c.NoContent(http.StatusOK)
+	})
+
+	e.DELETE("/api/v1/contacts/:contact_id", func(c echo.Context) error {
+		contact_id, err := strconv.Atoi(c.Param("contact_id"))
+		if err != nil {
+			return c.NoContent(http.StatusBadRequest)
+		}
+		if !contact.ValidateContactId(contact_id) {
+			return c.NoContent(http.StatusBadRequest)
+		}
+
+		contact.Delete(contact_id)
+
+		return c.NoContent(http.StatusOK)
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))
